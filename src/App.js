@@ -1,25 +1,46 @@
 import React from 'react';
-import logo from './logo.svg';
+import {
+  createMuiTheme, 
+  ThemeProvider, 
+} from '@material-ui/core';
+import AvatarBuilder from './js/components/builder/avatar-builder';
 import './App.css';
+
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+        main: '#54068c'
+     }, 
+    secondary: {
+        main: '#de871d'
+     }, 
+    success: {
+        main: '#16ba64', //Green
+    },
+    black: {
+      main: '#232323',
+    },
+    white: {
+      main: '#f7f7f7',
+      rgb: '247, 247, 247',
+    },
+    red: {
+      main: '#BC3216',
+      rgb: '188, 50, 22'
+    },
+    background: {
+      paper: '#f7f7f7',
+    },
+  },
+});
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ThemeProvider theme={theme} >
+      <div className="App">
+        <AvatarBuilder />
+      </div>
+    </ThemeProvider>
   );
 }
 
