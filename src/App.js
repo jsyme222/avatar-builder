@@ -1,10 +1,24 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   createMuiTheme, 
   ThemeProvider, 
 } from '@material-ui/core';
 import AvatarBuilder from './js/components/builder/avatar-builder';
 import './App.css';
+import { setAvatar } from './js/redux/actions/index';
+import { connect } from 'react-redux';
+
+const mapStateToProps = state => {
+  return {
+    avatar: state.avatar
+  }
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    setAvatar: avatar => dispatch(setAvatar(avatar)),
+  }
+};
 
 const theme = createMuiTheme({
   palette: {
@@ -34,7 +48,15 @@ const theme = createMuiTheme({
   },
 });
 
-function App() {
+function App(props) {
+  const [avatar, setAvatar] = useState(null);
+
+  useEffect(() => {
+    if(!avatar){
+      let test_avatar = require('./js/test-avatar.json');
+      props.setAvatar(test_avatar);
+    }
+  })
   return (
     <ThemeProvider theme={theme} >
       <div className="App">
@@ -44,4 +66,4 @@ function App() {
   );
 }
 
-export default App;
+export default connect(mapStateToProps, mapDispatchToProps)(App);

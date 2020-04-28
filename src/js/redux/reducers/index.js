@@ -36,6 +36,7 @@ const USER = {
 const STATE = {
     loading: true,
     avatar: AVATAR,
+    user: USER,
 };
 
 function rootReducer(state=STATE, action) {
@@ -44,6 +45,7 @@ function rootReducer(state=STATE, action) {
             avatar: action.payload
         });
     }
+    return state;
 };
 
 export default rootReducer;
