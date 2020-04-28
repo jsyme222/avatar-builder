@@ -2,8 +2,9 @@ import React from 'react';
 import { 
     makeStyles, 
     Paper, 
-    Container 
+    Container, 
 } from '@material-ui/core';
+import BuilderMenu from '../menu/menu-components/menu';
 
 
 function AvatarBuilder(props) {
@@ -12,12 +13,15 @@ function AvatarBuilder(props) {
 
         }
     }));
+    
     const classes = useStyles();
 
     return (
         <Container maxWidth={"lg"} className={classes.root}>
             <Paper>
-                <h1>Builder</h1>
+                <BuilderMenu>
+                    <h1>Builder</h1>
+                </BuilderMenu>
             </Paper>
         </Container>
     )

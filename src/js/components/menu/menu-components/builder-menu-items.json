@@ -1,0 +1,46 @@
+[
+    {
+        "title": "Overview",
+        "id": 0
+    },
+    {
+        "title": "Closet",
+        "id": 1
+    },
+    {
+        "title": "Base",
+        "id": 2
+    },
+    {
+        "title": "Face",
+        "id": 3
+    },
+    {
+        "title": "Hair",
+        "id": 4
+    },
+    {
+        "title": "Hats",
+        "id": 5
+    },
+    {
+        "title": "Tops",
+        "id": 6
+    },
+    {
+        "title": "Bottoms",
+        "id": 7
+    },
+    {
+        "title": "Feet",
+        "id": 8
+    },
+    {
+        "title": "Accessories",
+        "id": 9
+    },
+    {
+        "title": "Premium",
+        "id": 10
+    }
+]
