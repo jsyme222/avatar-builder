@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import {
   createMuiTheme, 
-  ThemeProvider, 
+  ThemeProvider,
+  makeStyles, 
 } from '@material-ui/core';
 import AvatarBuilder from './js/components/builder/avatar-builder';
 import './App.css';
-import { setAvatar } from './js/redux/actions/index';
+import { setAvatar, setLayers } from './js/redux/actions/index';
 import { connect } from 'react-redux';
 
 const mapStateToProps = state => {
@@ -17,6 +18,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     setAvatar: avatar => dispatch(setAvatar(avatar)),
+    setLayers: layers => dispatch(setLayers(layers)),
   }
 };
 
@@ -49,17 +51,36 @@ const theme = createMuiTheme({
 });
 
 function App(props) {
+  const useStyles = makeStyles((theme) => ({
+    root: {
+      textAlign: 'center',
+      marginTop: '2rem',
+    },
+  }));
+  const classes = useStyles();
+
   const [avatar, setAvatar] = useState(null);
+  const [layers, setLayers] = useState(null);
 
   useEffect(() => {
     if(!avatar){
       let test_avatar = require('./js/test-avatar.json');
+      setAvatar(test_avatar);
       props.setAvatar(test_avatar);
     }
-  })
+  }, [avatar, props]);
+
+  useEffect(() => {
+    if(!layers){
+      let test_layers = require('./js/test-layers.json');
+      setLayers(test_layers);
+      props.setLayers(test_layers);
+    }
+  }, [layers, props]);
+
   return (
     <ThemeProvider theme={theme} >
-      <div className="App">
+      <div className={classes.root}>
         <AvatarBuilder />
       </div>
     </ThemeProvider>
