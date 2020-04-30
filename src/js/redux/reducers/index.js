@@ -3,6 +3,8 @@ import {
     SET_SIDEBAR,
     SET_PANEL,
     SET_BASE,
+    SET_TOP,
+    SET_HAIR,
     SET_LAYERS,
     SET_GENDER,
 } from '../constants/action-types';
@@ -10,6 +12,8 @@ import {
 
 const LAYERS = {
         base: {
+            pk: null,
+            layer: null,
             title: "",
             image: "",
         },
@@ -22,11 +26,26 @@ const LAYERS = {
             expression: null,
         },
         hair: {
-            style: null,
-            color: null,
+            pk: null,
+            title: "",
+            layer: [
+                {
+                    layer: -1,
+                    image: ""
+                },
+                {
+                    layer: 50,
+                    image: ""
+                }
+            ]
         },
         hat: null,
-        top: null,
+        top: {
+            pk: null,
+            title: "",
+            layer: null,
+            image: "",
+        },
         bottom: null,
         feet: {
             left: null,
@@ -46,8 +65,8 @@ const STATE = {
     loading: true,
     sidebarOpen: false,
     openPanel: {
-        tab: 0,
-        title: 'Overview'
+        tab: 4,
+        title: 'Hair'
     },
     avatar: AVATAR,
     layers: LAYERS
@@ -71,7 +90,28 @@ function rootReducer(state=STATE, action) {
                 base: {
                     image: action.payload.image,
                     title: action.payload.title,
+                    pk: action.payload.pk,
                 }
+            }
+        });
+    }
+    if(action.type === SET_TOP) {
+        return Object.assign({}, state, {
+            layers: {
+                ...state.layers,
+                top: {
+                    image: action.payload.image,
+                    title: action.payload.title,
+                    pk: action.payload.pk
+                }
+            }
+        });
+    }
+    if(action.type === SET_HAIR) {
+        return Object.assign({}, state, {
+            layers: {
+                ...state.layers,
+                hair: action.payload
             }
         });
     }

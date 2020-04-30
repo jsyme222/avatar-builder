@@ -64,7 +64,7 @@ function App(props) {
 
   useEffect(() => {
     if(!avatar){
-      let test_avatar = require('./js/test-avatar.json');
+      let test_avatar = require('./js/test-avatar-data/test-avatar.json');
       setAvatar(test_avatar);
       props.setAvatar(test_avatar);
     }
@@ -72,7 +72,7 @@ function App(props) {
 
   useEffect(() => {
     if(!layers){
-      let test_layers = require('./js/test-layers.json');
+      let test_layers = require('./js/test-avatar-data/test-layers.json');
       setLayers(test_layers);
       props.setLayers(test_layers);
     }

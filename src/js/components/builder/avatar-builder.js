@@ -4,7 +4,7 @@ import {
     Paper, 
     Container,
 } from '@material-ui/core';
-import BuilderMenu from './page-frame/page-frame';
+import BuilderMenuPageFrame from './page-frame/page-frame';
 import BuilderAppBar from '../menu/menu-components/app-bar/app-bar';
 import BuilderAvatar from '../avatar/avatar';
 import { connect } from 'react-redux';
@@ -31,12 +31,12 @@ function AvatarBuilder(props) {
 
     return (
             <Container maxWidth={"lg"} id={"avatar-container"}>
-                <Paper className={classes.root}>
-                    <BuilderMenu>
-                        <BuilderAvatar />
-                    </BuilderMenu>
-                </Paper>
                 <BuilderAppBar />
+                <Paper className={classes.root}>
+                    <BuilderMenuPageFrame>
+                        <BuilderAvatar />
+                    </BuilderMenuPageFrame>
+                </Paper>
             </Container>
     )
 }

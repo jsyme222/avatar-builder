@@ -1,22 +1,26 @@
 [
     {
+        "pk": 2,
         "gender": "Male",
         "title": "Base Male",
-        "image": "http://192.168.0.34:8000/media/items/layers/Male.png"
+        "image": "http://192.168.0.34:8000/media/items/layers/malebest.png"
     },
     {
+        "pk": 1,
         "gender": "Female",
         "title": "Base Female",
-        "image": "http://192.168.0.34:8000/media/items/layers/Female.png"
+        "image": "http://192.168.0.34:8000/media/items/layers/femalebest.png"
     },
     {
+        "pk": 3,
         "gender": "Male",
         "title": "Blank Male",
-        "image": "http://192.168.0.34:8000/media/items/layers/blankbase.png"
+        "image": "http://192.168.0.34:8000/media/items/layers/blankbase_I6Tc3ri.png"
     },
     {
+        "pk": 4,
         "gender": "Female",
         "title": "Blank Female",
-        "image": "http://192.168.0.34:8000/media/items/layers/blankbase.png"
+        "image": "http://192.168.0.34:8000/media/items/layers/blankbase_I6Tc3ri.png"
     }
 ]

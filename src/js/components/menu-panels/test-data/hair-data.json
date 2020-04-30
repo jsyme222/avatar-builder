@@ -1,0 +1,34 @@
+[
+    {
+        "pk": 1,
+        "title": "Basic Hair",
+        "gender": "Unisex",
+        "thumbnail": "http://192.168.0.34:8000/media/items/images/basic-hair_thumbnail.png",
+        "layer": [
+            {
+                "layer": 50,
+                "image": "http://192.168.0.34:8000/media/items/layers/Basic_Hair_Unisex_Front_Layer.png"
+            },
+            {
+                "layer": 0,
+                "image": "http://192.168.0.34:8000/media/items/layers/Basic_Hair_Unisex_Back_Layer.png"
+            }
+        ]
+    },
+    {
+        "pk": 2,
+        "title": "Basic Hair Purple",
+        "gender": "Unisex",
+        "thumbnail": "http://192.168.0.34:8000/media/items/images/basic-hair-purple_thumbnail.png",
+        "layer": [
+            {
+                "layer": 50,
+                "image": "http://192.168.0.34:8000/media/items/layers/Basic_Hair_Unisex_Front_Layer-purple.png"
+            },
+            {
+                "layer": 0,
+                "image": "http://192.168.0.34:8000/media/items/layers/Basic_Hair_Unisex_Back_Layer.png"
+            }
+        ]
+    }
+]

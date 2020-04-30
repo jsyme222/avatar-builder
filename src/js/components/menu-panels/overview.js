@@ -51,7 +51,7 @@ function OverviewTab(props) {
                 <Grid item xs={6}>
                     <Paper className={classes.headerBox}>
                         <p>Outfit</p>
-                        <h4>{props.outfitName}</h4>
+                        <h4>{props.outfitName || "N/A"}</h4>
                     </Paper>
                 </Grid>
                 <Grid item xs={12}>

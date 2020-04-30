@@ -5,6 +5,8 @@ import {
     SET_BASE,
     SET_LAYERS,
     SET_GENDER,
+    SET_TOP,
+    SET_HAIR,
 } from '../constants/action-types';
 
 export function setAvatar(payload) {
@@ -17,6 +19,14 @@ export function setLayers(payload) {
 
 export function setBase(payload) {
     return {type: SET_BASE, payload}
+};
+
+export function setTop(payload) {
+    return {type: SET_TOP, payload}
+};
+
+export function setHair(payload) {
+    return {type: SET_HAIR, payload}
 };
 
 export function setGender(payload) {

@@ -45,10 +45,10 @@ function BuilderAppBar(props) {
 
         },
         appBar: {
-          top: 'auto',
-          bottom: 0,
+          bottom: 'auto',
+          top: 0,
           '@media(max-width: 960px)': {
-              marginTop: 20,
+              marginBottom: 20,
           }
         },
         builderMenuContainer: {
@@ -59,7 +59,7 @@ function BuilderAppBar(props) {
         snapshot: {
             position: 'absolute',
             zIndex: 1,
-            top: -30,
+            top: 30,
             left: 0,
             right: 0,
             margin: '0 auto',
@@ -69,7 +69,7 @@ function BuilderAppBar(props) {
     const classes = useStyles();
 
     const handleMenuClick = (event) => {
-        setAnchorEl(document.querySelector("#avatar-container"));
+        setAnchorEl(event.currentTarget);
     };
     const handleMenuClose = (event) => {
         setAnchorEl(null);

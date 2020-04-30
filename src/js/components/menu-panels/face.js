@@ -3,16 +3,14 @@ import {
     Paper,
     makeStyles,
     Typography,
-    Switch,
-    Grid,
-    Button
+    Switch
 } from '@material-ui/core';
 import { connect } from 'react-redux';
 import { setAvatar, setBase, setGender } from '../../redux/actions/index';
 
 const mapStateToProps = state => {
     return {
-        base: state.layers.base,
+        base: state.layers.base.title,
         username: state.avatar.username,
         gender: state.avatar.gender,
     }
@@ -25,7 +23,7 @@ const mapDispatchToProps = dispatch => {
     }
 };
 
-function BaseTab(props) {
+function FaceTab(props) {
     const useStyles = makeStyles((theme) => ({
         root: {
 
@@ -56,33 +54,22 @@ function BaseTab(props) {
         },
         baseOptionImage: {
             height: 100,
-        },
-        buttonInfo: {
-            display: 'flex',
-            flexFlow: 'row',
-            justifyContent: 'space-between',
-            margin: 15,
         }
     }));
     const classes = useStyles();
     const [baseOptions, setBaseOptions] = useState(null);
     const [gender, setGender] = useState(null);
 
-    const handleClick = (image, title, newGender, pk) => {
+    const handleClick = (image, title, newGender) => {
         props.setBase(
             {
                 title: title,
                 image: image,
-                gender: newGender,
-                pk: pk
+                gender: newGender
             }
         )
         props.setGender(newGender);
     };
-    const handleChange = (event) => {
-        let newGender = (gender === 'Male') ? 'Female' : 'Male';
-        setGender(newGender);
-    }
 
     useEffect(() => {
         if(!baseOptions){
@@ -99,9 +86,9 @@ function BaseTab(props) {
 
     return (
         <Paper>
-            <Typography component={"div"}>Base</Typography>
+            <Typography component={"div"}>Face</Typography>
             <div className={classes.header}>
-                <p>Choose your Base</p>
+                <p>Choose your Face</p>
             </div>
             <Paper className={classes.baseContainer}>
                 {
@@ -109,37 +96,20 @@ function BaseTab(props) {
                         baseOptions.map((option, index) => 
                             (option.gender === gender) ?
                                     <Paper 
-                                        className={(props.base.pk === option.pk) ? classes.baseOptionChosen : classes.baseOptionContainer } 
-                                        onClick={() => handleClick(option.image, option.title, option.gender, option.pk)}
+                                        className={(props.base === option.title) ? classes.baseOptionChosen : classes.baseOptionContainer } 
+                                        onClick={() => handleClick(option.image, option.title, option.gender)}
                                         key={index}
                                         >
+                                        
+                                        <p>{option.title}</p>
                                         <img src={option.image} alt={option.alt} className={classes.baseOptionImage} />
                                     </Paper>
                                     : null
                         )
                 }
             </Paper>
-            <div>
-                <p>Gender</p>
-                Female
-                <Switch
-                    checked={gender === "Male"}
-                    onChange={handleChange}
-                />
-                Male
-            </div>
-                <Grid container>
-                    <Grid item xs={12} className={classes.buttonInfo}>
-                        <Button variant={"outlined"}>Reset</Button>
-                        <p>Reset your avatar to the default equipment and settings</p>
-                    </Grid>
-                    <Grid item xs={12} className={classes.buttonInfo}>
-                        <Button variant={"outlined"}>Strip</Button>
-                        <p>Who needs clothes anyway!</p>
-                    </Grid>
-                </Grid>
         </Paper>
     )
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(BaseTab);
+export default connect(mapStateToProps, mapDispatchToProps)(FaceTab);

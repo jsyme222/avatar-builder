@@ -1,7 +1,0 @@
-{
-    "base": {
-        "layer" : 0,
-            "title": "Base Male",
-            "image": "http://192.168.0.34:8000/media/items/layers/Male.png"
-    }
-}

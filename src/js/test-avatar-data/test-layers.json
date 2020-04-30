@@ -1,0 +1,31 @@
+{
+    "base": {
+        "layer" : 0,
+        "pk": 1,
+        "title": "Base Female",
+        "gender": "Female",
+        "image": "http://192.168.0.34:8000/media/items/layers/femalebest.png"
+    },
+    "top": {
+        "layer": 1,
+        "pk": 1,
+        "title": "Female Top",
+        "gender": "Female",
+        "image": "http://192.168.0.34:8000/media/items/images/female-top.png"
+    },
+    "hair": {
+        "pk": 1,
+        "title": "Basic Hair",
+        "gender": "Unisex",
+        "layer": [
+            {
+                "layer": 0,
+                "image": "http://192.168.0.34:8000/media/items/layers/Basic_Hair_Unisex_Back_Layer.png"
+            },
+            {
+                "layer": 50,
+                "image": "http://192.168.0.34:8000/media/items/layers/Basic_Hair_Unisex_Front_Layer.png"
+            }
+        ]
+    }
+}
