@@ -9,6 +9,7 @@ import {
 } from '@material-ui/core';
 import { connect } from 'react-redux';
 import { setAvatar, setBase, setGender } from '../../redux/actions/index';
+import { APIHandler } from '../../conf';
 
 const mapStateToProps = state => {
     return {
@@ -80,14 +81,16 @@ function BaseTab(props) {
         props.setGender(newGender);
     };
     const handleChange = (event) => {
-        let newGender = (gender === 'Male') ? 'Female' : 'Male';
+        let newGender = (gender === 'MALE') ? 'FEMALE' : 'MALE';
         setGender(newGender);
     }
 
     useEffect(() => {
         if(!baseOptions){
-            let options = require('./test-data/base-data.json');
-            setBaseOptions(options);
+            APIHandler('baseImages')
+            .then((bases) => setBaseOptions(bases.results));
+            // let options = require('./test-data/base-data.json');
+            // setBaseOptions(options);
         }
     }, [baseOptions, ]);
 
@@ -105,15 +108,15 @@ function BaseTab(props) {
             </div>
             <Paper className={classes.baseContainer}>
                 {
-                    baseOptions && 
-                        baseOptions.map((option, index) => 
-                            (option.gender === gender) ?
+                    Array.isArray(baseOptions) && 
+                        baseOptions.map((option) => 
+                            (option.gender === gender || option.gender === "UNISEX") ?
                                     <Paper 
                                         className={(props.base.pk === option.pk) ? classes.baseOptionChosen : classes.baseOptionContainer } 
                                         onClick={() => handleClick(option.image, option.title, option.gender, option.pk)}
-                                        key={index}
+                                        key={option.pk}
                                         >
-                                        <img src={option.image} alt={option.alt} className={classes.baseOptionImage} />
+                                        <img src={option.image.image} alt={option.alt} className={classes.baseOptionImage} />
                                     </Paper>
                                     : null
                         )
@@ -123,7 +126,7 @@ function BaseTab(props) {
                 <p>Gender</p>
                 Female
                 <Switch
-                    checked={gender === "Male"}
+                    checked={gender === "MALE"}
                     onChange={handleChange}
                 />
                 Male

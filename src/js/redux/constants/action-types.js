@@ -6,3 +6,4 @@ export const SET_GENDER = "SET_GENDER";
 export const SET_SIDEBAR = "SET_SIDEBAR";
 export const SET_PANEL = "SET_PANEL";
 export const SET_HAIR = "SET_HAIR";
+export const SET_ACCESSORIES = "SET_ACCESSORIES";

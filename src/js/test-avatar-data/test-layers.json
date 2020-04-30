@@ -1,31 +1,62 @@
 {
     "base": {
         "layer" : 0,
-        "pk": 1,
+        "pk": 2,
         "title": "Base Female",
-        "gender": "Female",
-        "image": "http://192.168.0.34:8000/media/items/layers/femalebest.png"
+        "gender": "FEMALE",
+        "image": {
+            "image": "http://192.168.0.34:8000/media/items/layers/femalebest.png",
+            "pk": 2,
+            "title": "Base Female"
+        }
     },
     "top": {
         "layer": 1,
         "pk": 1,
         "title": "Female Top",
-        "gender": "Female",
-        "image": "http://192.168.0.34:8000/media/items/images/female-top.png"
+        "gender": "FEMALE",
+        "image": {
+            "image": "http://192.168.0.34:8000/media/items/images/female-top.png",
+            "pk": 3,
+            "title": "Female Top"
+        }
     },
     "hair": {
         "pk": 1,
         "title": "Basic Hair",
-        "gender": "Unisex",
+        "gender": "UNISEX",
         "layer": [
             {
                 "layer": 0,
-                "image": "http://192.168.0.34:8000/media/items/layers/Basic_Hair_Unisex_Back_Layer.png"
+                "image": {
+                    "image": "http://192.168.0.34:8000/media/items/layers/Basic_Hair_Unisex_Back_Layer.png",
+                    "pk": 4,
+                    "title": "Plain Hair Back"
+                }
             },
             {
                 "layer": 50,
-                "image": "http://192.168.0.34:8000/media/items/layers/Basic_Hair_Unisex_Front_Layer.png"
+                "image": {
+                    "image": "http://192.168.0.34:8000/media/items/layers/Basic_Hair_Unisex_Front_Layer.png",
+                    "pk": 5,
+                    "title": "Plain Hair Front"
+                }
             }
         ]
-    }
+    },
+    "accessories": [
+        {
+            "gender": "UNISEX",
+            "image": { 
+                "id": 5,
+                "title": "Lacey Choker",
+                "image": "http://192.168.0.34:8000/media/items/images/lacey-choker/lacey-choker.png"
+            },
+            "layer": 1,
+            "pk": 4,
+            "premium": false,
+            "subcategory": null,
+            "title": "Lacey Choker"
+        }
+    ]
 }

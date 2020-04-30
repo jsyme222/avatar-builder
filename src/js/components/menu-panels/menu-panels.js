@@ -8,6 +8,8 @@ import BaseTab from './base';
 import FaceTab from './face';
 import HairTab from './hair';
 import TopsTab from './tops';
+import BottomsTab from './bottoms';
+import AccessoriesTab from './accessories';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
@@ -63,6 +65,12 @@ function MenuPanels(props) {
             </TabPanel>
             <TabPanel value={props.openPanel} index={6}>
                 <TopsTab />
+            </TabPanel>
+            <TabPanel value={props.openPanel} index={7}>
+                <BottomsTab />
+            </TabPanel>
+            <TabPanel value={props.openPanel} index={9}>
+                <AccessoriesTab />
             </TabPanel>
         </>
     )
