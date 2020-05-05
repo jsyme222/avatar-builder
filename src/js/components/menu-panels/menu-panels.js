@@ -5,7 +5,7 @@ import {
 import OverviewTab from './overview';
 import ClosetTab from './closet';
 import BaseTab from './base';
-import FaceTab from './face';
+import FaceTab from './face/face';
 import HairTab from './hair';
 import TopsTab from './tops';
 import BottomsTab from './bottoms';

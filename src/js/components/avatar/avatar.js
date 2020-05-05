@@ -38,10 +38,31 @@ const Layers = (props) => {
         layers.base,
         layers.top,
         layers.hair,
+        layers.bottom,
         layers.accessories,
+        layers.face,
     ];
     let combined = [];
     layersArray.map((layer) => {
+        if(layer === layers.face) {
+            console.log(layer);
+            // layer.map((faceItem) => {
+            //     Object.entries(faceItem[1]).map((item) => {
+            //         console.log(item);
+            //         combined.push(
+            //             <img 
+            //                 key={item.image.image.pk} 
+            //                 src={item.image.image} 
+            //                 alt={item.alt} 
+            //                 className={classes.layer} 
+            //                 style={{zIndex: item.layer}}
+            //                 />
+            //             )
+            //             return true
+            //     })
+            //     return true
+            // })
+        }
         if(Array.isArray(layer)){
             layer.map((innerLayer) => {
                 combined.push(
@@ -53,6 +74,7 @@ const Layers = (props) => {
                         style={{zIndex: innerLayer.layer}}
                         />
                 );
+                return true
             })
         }
         else if(Array.isArray(layer.layer)){
@@ -79,6 +101,7 @@ const Layers = (props) => {
                     />
             );
         }
+        return true
     });
     
     return combined

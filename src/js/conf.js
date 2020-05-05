@@ -1,8 +1,10 @@
-export const URL = "http://192.168.0.34:8000";
+export const URL = "http://192.168.68.107:8000";
 
 const PATHS = {
     'baseImages': '/api/avatar/base-images',
     'accessories': '/api/item/view/accessories',
+    'bottoms': '/api/item/view/bottoms',
+    'faces': '/api/item/view/faces',
 };
 
 const DEFAULT_OPTIONS = {

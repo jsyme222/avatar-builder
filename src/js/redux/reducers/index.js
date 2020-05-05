@@ -3,11 +3,17 @@ import {
     SET_SIDEBAR,
     SET_PANEL,
     SET_BASE,
+    SET_FACE,
     SET_TOP,
+    SET_BOTTOM,
     SET_HAIR,
     SET_LAYERS,
     SET_GENDER,
     SET_ACCESSORIES,
+    SET_EYEBROWS,
+    SET_EYES,
+    SET_NOSE,
+    SET_MOUTH,
 } from '../constants/action-types';
 
 
@@ -24,14 +30,20 @@ const LAYERS = {
                 pk: null,
             },
         },
-        face: {
-            eyebrows: null,
-            eyes: null,
-            ears: null,
-            mouth: null,
-            nose: null,
-            expression: null,
-        },
+        face: [
+            {
+                pk: null,
+                layer: null,
+                title: "",
+                image: {
+                    alt: "",
+                    title: "",
+                    fixed_to: null,
+                    image: "",
+                    pk: null,
+                }
+            },
+        ],
         hair: {
             pk: null,
             title: "",
@@ -53,7 +65,18 @@ const LAYERS = {
             layer: null,
             image: "",
         },
-        bottom: null,
+        bottom: {
+            pk: null,
+            layer: null,
+            title: "",
+            image: {
+                alt: "",
+                title: "",
+                fixed_to: null,
+                image: "",
+                pk: null,
+            },
+        },
         feet: {
             left: null,
             right: null
@@ -72,8 +95,8 @@ const STATE = {
     loading: true,
     sidebarOpen: false,
     openPanel: {
-        tab: 9,
-        title: 'Accessories'
+        tab: 3,
+        title: 'Faces'
     },
     avatar: AVATAR,
     layers: LAYERS
@@ -114,12 +137,65 @@ function rootReducer(state=STATE, action) {
             }
         });
     }
-    if(action.type === SET_HAIR) {
+    if(action.type === SET_BOTTOM) {
         return Object.assign({}, state, {
             layers: {
                 ...state.layers,
-                hair: action.payload
+                bottom: {
+                    image: action.payload.image,
+                    title: action.payload.title,
+                    pk: action.payload.pk
+                }
             }
+        });
+    }
+    if(action.type === SET_FACE) {
+        return Object.assign({}, state, {
+            layers: {
+                ...state.layers,
+                face: action.payload
+            }
+        });
+    }
+    if(action.type === SET_EYEBROWS) {
+        return Object.assign({}, state, {
+            layers: {
+                ...state.layers,
+                face: [
+                    ...state.layers.face,
+                    action.payload
+                ]
+            }
+        });
+    }
+    if(action.type === SET_EYES) {
+        return Object.assign({}, state, {
+            layers: {
+                ...state.layers,
+                face: [
+                    ...state.layers.face,
+                    action.payload
+                ]
+            }
+        });
+    }
+    if(action.type === SET_MOUTH) {
+        return Object.assign({}, state, {
+            layers: {
+                ...state.layers,
+                face: [
+                    ...state.layers.face,
+                    action.payload
+                ]
+            }
+        });
+    }
+    if(action.type === SET_HAIR) {
+        return Object.assign({}, state, {
+            layers: [
+                ...state.layers,
+                action.payload
+            ]
         });
     }
     if(action.type === SET_ACCESSORIES) {
@@ -149,6 +225,6 @@ function rootReducer(state=STATE, action) {
         });
     }
     return state;
-};
+}
 
 export default rootReducer;

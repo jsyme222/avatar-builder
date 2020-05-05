@@ -5,23 +5,23 @@ import {
     Typography,
 } from '@material-ui/core';
 import { connect } from 'react-redux';
-import { setAccessories } from '../../redux/actions/index';
+import { setBottom } from '../../redux/actions/index';
 import { APIHandler } from '../../conf';
 
 const mapStateToProps = state => {
     return {
-        accessories: state.layers.accessories,
+        bottom: state.layers.bottom,
         gender: state.avatar.gender,
     }
 };
 const mapDispatchToProps = dispatch => {
     return {
-        setAccessories: ace => dispatch(setAccessories(ace)),
+        setBottom: bottom => dispatch(setBottom(bottom)),
     }
 };
 
 function BottomsTab(props) {
-    const [accessories, setAccessories] = useState(null);
+    const [bottoms, setBottoms] = useState(null);
     const [equipped, setEquipped] = useState(null);
     const useStyles = makeStyles((theme) => ({
         root: {
@@ -58,26 +58,14 @@ function BottomsTab(props) {
     const classes = useStyles();
 
     useEffect(() => {
-        if(!accessories) {
-            APIHandler('accessories')
-            .then((aces) => setAccessories(aces.results));
+        if(!bottoms) {
+            APIHandler('bottoms')
+            .then((bottoms) => setBottoms(bottoms.results));
         }
-    }, [accessories, ]);
-
-    useEffect(() => {
-        if(props.accessories.length >= 1){
-                let e = []
-                props.accessories.map((ace) => 
-                    e.push(ace.pk)
-                )
-                setEquipped(e);
-        }else {
-            setEquipped([])
-        }
-    }, [props.accessories]);
+    }, [bottoms, ]);
 
     const handleClick = (pk, image, title, ) => {
-        props.setAccessories(
+        props.setBottom(
             {
                 pk: pk,
                 title: title,
@@ -89,17 +77,17 @@ function BottomsTab(props) {
 
     return (
         <Paper>
-            <Typography component={"div"}>Accessories</Typography>
+            <Typography component={"div"}>Bottoms</Typography>
             <div className={classes.header}>
-                <p>Choose your accessories</p>
+                <p>Choose your Bottoms</p>
             </div>
             <Paper className={classes.baseContainer}>
                 {
-                    Array.isArray(accessories) && 
-                        accessories.map((option, index) => 
+                    Array.isArray(bottoms) && 
+                        bottoms.map((option, index) => 
                             (option.gender === props.gender || option.gender === "UNISEX") ?
                                     <Paper 
-                                        className={(equipped.includes(option.pk)) ? classes.baseOptionChosen : classes.baseOptionContainer } 
+                                        className={(option.pk === props.bottom.pk) ? classes.baseOptionChosen : classes.baseOptionContainer } 
                                         onClick={() => handleClick(option.pk, option.image, option.title)}
                                         key={index}
                                         >
