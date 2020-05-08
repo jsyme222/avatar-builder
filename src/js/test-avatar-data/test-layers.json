@@ -1,66 +1,61 @@
 {
     "base": {
         "layer" : 0,
-        "pk": 2,
+        "id": 2,
         "title": "Base Female",
-        "gender": "FEMALE",
+        "gender": "Female",
         "image": {
-            "image": "http://192.168.68.107:8000/media/items/layers/femalebest.png",
-            "pk": 2,
+            "image": "http://192.168.0.34:8000/media/items/layers/femalebest.png",
+            "id": 2,
             "title": "Base Female"
         }
     },
-    "face": [
-        {
+    "face": {
+        "mouth": {
             "layer": 1,
-            "pk": 1009,
+            "id": 9,
             "title": "Big Smile",
             "image": {
-                "image": "http://192.168.68.107:8000/media/items/images/big-smile/big-smile.png",
-                "pk": 16
+                "image": "http://192.168.0.34:8000/media/items/images/big-smile/big-smile.png",
+                "id": 16
             }
         }
-    ],
-    "top": {
+    },
+    "tops": {
         "layer": 1,
-        "pk": 1001,
+        "id": 1001,
         "title": "Female Top",
-        "gender": "FEMALE",
+        "gender": "Female",
         "image": {
-            "image": "http://192.168.68.107:8000/media/items/images/female-top.png",
-            "pk": 3,
+            "image": "http://192.168.0.34:8000/media/items/images/female-top.png",
+            "id": 3,
             "title": "Female Top"
         }
     },
     "hair": {
-        "pk": 1001,
+        "id": 1001,
         "title": "Basic Hair",
-        "gender": "UNISEX",
-        "layer": [
-            {
-                "layer": 0,
-                "image": {
-                    "image": "http://192.168.68.107:8000/media/items/layers/Basic_Hair_Unisex_Back_Layer.png",
-                    "pk": 4,
-                    "title": "Plain Hair Back"
-                }
+        "gender": "Unisex",
+        "layer": 1,
+        "image": {
+            "layer1": {
+                "fixed_to": "BACK",
+                "image": "http://192.168.0.34:8000/media/items/layers/Basic_Hair_Unisex_Back_Layer.png",
+                "id": 8
             },
-            {
-                "layer": 50,
-                "image": {
-                    "image": "http://192.168.68.107:8000/media/items/layers/Basic_Hair_Unisex_Front_Layer.png",
-                    "pk": 5,
-                    "title": "Plain Hair Front"
-                }
+            "layer2": {
+                    "fixed_to": "FRONT",
+                    "image": "http://192.168.0.34:8000/media/items/layers/Basic_Hair_Unisex_Front_Layer.png",
+                    "id": 9
             }
-        ]
+        }
     },
     "bottom": {
-        "pk": 6,
+        "id": 6,
         "asking_muns": 0,
         "asking_shinies": 0,
         "category": "BOTTOMS",
-        "gender": "FEMALE",
+        "gender": "Female",
         "premium": false,
         "subcategory": null,
         "title": "Basic SKirt",
@@ -68,8 +63,8 @@
         "image": {
             "id": 7,
             "title": "Basic Skirt",
-            "image": "http://192.168.68.107:8000/media/items/images/basic-skirt/basic-skirt.png",
-            "thumbnail": "http://192.168.68.107:8000/media/items/images/basic-skirt/basic-skirt_thumbnail.png",
+            "image": "http://192.168.0.34:8000/media/items/images/basic-skirt/basic-skirt.png",
+            "thumbnail": "http://192.168.0.34:8000/media/items/images/basic-skirt/basic-skirt_thumbnail.png",
             "layer1": 13,
             "layer2": null,
             "layer3": null,
@@ -80,14 +75,14 @@
     },
     "accessories": [
         {
-            "gender": "UNISEX",
+            "gender": "Unisex",
             "image": { 
                 "id": 5,
                 "title": "Lacey Choker",
-                "image": "http://192.168.68.107:8000/media/items/images/lacey-choker/lacey-choker.png"
+                "image": "http://192.168.0.34:8000/media/items/images/lacey-choker/lacey-choker.png"
             },
             "layer": 1,
-            "pk": 4,
+            "id": 4,
             "premium": false,
             "subcategory": null,
             "title": "Lacey Choker"

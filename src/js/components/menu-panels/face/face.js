@@ -3,22 +3,26 @@ import {
     Paper,
     makeStyles,
     Typography,
-    Container,
 } from '@material-ui/core';
 import { connect } from 'react-redux';
 import { 
     setFace,
     setEyebrows,
     setEyes,
-    setNose,
     setMouth,
+    setNose,
 } from '../../../redux/actions/index';
+import ItemsList from '../../items/items-list';
 import { APIHandler } from '../../../conf';
 
 const mapStateToProps = state => {
     return {
         gender: state.avatar.gender,
-        face: state.layers.face
+        face: state.layers.face,
+        eyebrows: state.layers.face.eyebrows,
+        eyes: state.layers.face.eyes,
+        nose: state.layers.face.nose,
+        mouth: state.layers.face.mouth,
     }
 };
 const mapDispatchToProps = dispatch => {
@@ -27,14 +31,12 @@ const mapDispatchToProps = dispatch => {
         setEyebrows: eyebrows => dispatch(setEyebrows(eyebrows)),
         setEyes: eyes => dispatch(setEyes(eyes)),
         setMouth: mouth => dispatch(setMouth(mouth)),
+        setNose: nose => dispatch(setNose(nose)),
     }
 };
 
 function FaceTab(props) {
     const useStyles = makeStyles((theme) => ({
-        root: {
-
-        },
         header: {
             padding: 0,
             margin: 5,
@@ -46,43 +48,23 @@ function FaceTab(props) {
         itemContainer: {
             display: 'flex',
         },
-        baseOptionContainer: {
-            margin: 10,
-            padding: 5,
-            transition: 'all 1 ease',
-            '&:hover': {
-                cursor: 'pointer',
-                background: 'grey',
-                '& >img': {
-                    padding: 0,
-                }
-            }
-        },
         baseOptionChosen: {
             border: '2px solid grey',
             padding: 0,
         },
-        baseOptionImage: {
-            height: 100,
-        }
     }));
     const classes = useStyles();
     const [faceCategories, setFaceCategories] = useState(null);
     const SUBCATEGORIES = {
-        'Eyebrows': props.setEyebrows,
-        'Eyes': props.setEyes,
-        'Noses': props.setNose,
-        'Mouths': props.setMouth
+        'EYEBROWS': props.setEyebrows,
+        'EYES': props.setEyes,
+        'NOSES': props.setNose,
+        'MOUTHS': props.setMouth
     };
 
-    const handleClick = (field, item_number, image, title) => {
-        let newObj = {
-            pk: item_number,
-            image: image,
-            title: title,
-        }
-        console.log(newObj);
-        SUBCATEGORIES[field](newObj);
+    const handleClick = (obj) => {
+        let field = obj.subcategory;
+        SUBCATEGORIES[field](obj);
     };
 
     useEffect(() => {
@@ -105,25 +87,13 @@ function FaceTab(props) {
                         Object.entries(faceCategories).map((option, index) => // Loop through all face categories
                                     Array.isArray(option[1]) && option[1].length >= 1 ?
                                     
-                                            <Container key={index} className={classes.baseContainer}>
+                                            <Paper key={index} className={classes.baseContainer}>
                                                 <Typography component={"div"}>{option[0]}</Typography>
-                                                <div className={classes.itemContainer}>
-                                                    {
-                                                            option[1].map((item) => // Loop through items of category
-
-                                                                    <Paper
-                                                                        className={classes.baseOptionContainer} 
-                                                                        onClick={() => handleClick(option[0], item.item_number, item.image, item.title)}
-                                                                        key={item.pk}
-                                                                    >
-                                                                        {console.log()}
-                                                                        <img src={item.image.thumbnail} alt={item.alt} className={classes.baseOptionImage} />
-                                                                    </Paper>
-
-                                                            )
-                                                    }
-                                                </div>
-                                            </Container>
+                                                <ItemsList 
+                                                    items={option[1]}
+                                                    onClickAction={handleClick}
+                                                    />
+                                            </Paper>
                                         :
                                         null
 

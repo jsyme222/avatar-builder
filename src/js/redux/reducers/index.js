@@ -3,9 +3,8 @@ import {
     SET_SIDEBAR,
     SET_PANEL,
     SET_BASE,
-    SET_FACE,
-    SET_TOP,
-    SET_BOTTOM,
+    SET_TOPS,
+    SET_BOTTOMS,
     SET_HAIR,
     SET_LAYERS,
     SET_GENDER,
@@ -18,69 +17,13 @@ import {
 
 
 const LAYERS = {
-        base: {
-            pk: null,
-            layer: null,
-            title: "",
-            image: {
-                alt: "",
-                title: "",
-                fixed_to: null,
-                image: "",
-                pk: null,
-            },
-        },
-        face: [
-            {
-                pk: null,
-                layer: null,
-                title: "",
-                image: {
-                    alt: "",
-                    title: "",
-                    fixed_to: null,
-                    image: "",
-                    pk: null,
-                }
-            },
-        ],
-        hair: {
-            pk: null,
-            title: "",
-            layer: [
-                {
-                    layer: -1,
-                    image: ""
-                },
-                {
-                    layer: 50,
-                    image: ""
-                }
-            ]
-        },
-        hat: null,
-        top: {
-            pk: null,
-            title: "",
-            layer: null,
-            image: "",
-        },
-        bottom: {
-            pk: null,
-            layer: null,
-            title: "",
-            image: {
-                alt: "",
-                title: "",
-                fixed_to: null,
-                image: "",
-                pk: null,
-            },
-        },
-        feet: {
-            left: null,
-            right: null
-        },
+        base: [],
+        face: {},
+        hair: [],
+        hat: {},
+        tops: [],
+        bottoms: [],
+        feet: [],
         accessories: []
     }
 
@@ -95,8 +38,8 @@ const STATE = {
     loading: true,
     sidebarOpen: false,
     openPanel: {
-        tab: 3,
-        title: 'Faces'
+        tab: 4,
+        title: 'Hair'
     },
     avatar: AVATAR,
     layers: LAYERS
@@ -110,50 +53,33 @@ function rootReducer(state=STATE, action) {
     }
     if(action.type === SET_LAYERS) {
         return Object.assign({}, state, {
-            layers: action.payload
+            layers: {
+                ...LAYERS,
+                base: state.layers.base,
+            }
         });
     }
     if(action.type === SET_BASE) {
         return Object.assign({}, state, {
             layers: {
                 ...state.layers,
-                base: {
-                    image: action.payload.image,
-                    title: action.payload.title,
-                    pk: action.payload.pk,
-                }
+                base: action.payload
             }
         });
     }
-    if(action.type === SET_TOP) {
+    if(action.type === SET_TOPS) {
         return Object.assign({}, state, {
             layers: {
                 ...state.layers,
-                top: {
-                    image: action.payload.image,
-                    title: action.payload.title,
-                    pk: action.payload.pk
-                }
+                tops: action.payload
             }
         });
     }
-    if(action.type === SET_BOTTOM) {
+    if(action.type === SET_BOTTOMS) {
         return Object.assign({}, state, {
             layers: {
                 ...state.layers,
-                bottom: {
-                    image: action.payload.image,
-                    title: action.payload.title,
-                    pk: action.payload.pk
-                }
-            }
-        });
-    }
-    if(action.type === SET_FACE) {
-        return Object.assign({}, state, {
-            layers: {
-                ...state.layers,
-                face: action.payload
+                bottoms: action.payload
             }
         });
     }
@@ -161,10 +87,10 @@ function rootReducer(state=STATE, action) {
         return Object.assign({}, state, {
             layers: {
                 ...state.layers,
-                face: [
+                face: {
                     ...state.layers.face,
-                    action.payload
-                ]
+                    eyebrows: action.payload
+                }
             }
         });
     }
@@ -172,10 +98,21 @@ function rootReducer(state=STATE, action) {
         return Object.assign({}, state, {
             layers: {
                 ...state.layers,
-                face: [
+                face: {
                     ...state.layers.face,
-                    action.payload
-                ]
+                    eyes: action.payload
+                }
+            }
+        });
+    }
+    if(action.type === SET_NOSE) {
+        return Object.assign({}, state, {
+            layers: {
+                ...state.layers,
+                face: {
+                    ...state.layers.face,
+                    nose: action.payload
+                }
             }
         });
     }
@@ -183,19 +120,19 @@ function rootReducer(state=STATE, action) {
         return Object.assign({}, state, {
             layers: {
                 ...state.layers,
-                face: [
+                face: {
                     ...state.layers.face,
-                    action.payload
-                ]
+                    mouth: action.payload
+                }
             }
         });
     }
     if(action.type === SET_HAIR) {
         return Object.assign({}, state, {
-            layers: [
+            layers: {
                 ...state.layers,
-                action.payload
-            ]
+                hair: action.payload
+            }
         });
     }
     if(action.type === SET_ACCESSORIES) {

@@ -1,8 +1,8 @@
 export const SET_AVATAR = "SET_AVATAR";
 export const SET_LAYERS = "SET_LAYERS";
 export const SET_BASE = "SET_BASE";
-export const SET_TOP = "SET_TOP";
-export const SET_BOTTOM = "SET_BOTTOM";
+export const SET_TOPS = "SET_TOPS";
+export const SET_BOTTOMS = "SET_BOTTOMS";
 export const SET_GENDER = "SET_GENDER";
 export const SET_SIDEBAR = "SET_SIDEBAR";
 export const SET_PANEL = "SET_PANEL";
@@ -12,3 +12,6 @@ export const SET_FACE = "SET_MOUTH";
 export const SET_EYEBROWS = "SET_EYEBROWS";
 export const SET_EYES = "SET_EYES";
 export const SET_MOUTH = "SET_MOUTH";
+export const SET_NOSE = "SET_NOSE";
+export const REMOVE = "REMOVE";
+export const ADD = "ADD";

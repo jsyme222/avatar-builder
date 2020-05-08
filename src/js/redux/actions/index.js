@@ -5,14 +5,15 @@ import {
     SET_BASE,
     SET_LAYERS,
     SET_GENDER,
-    SET_TOP,
+    SET_TOPS,
     SET_HAIR,
     SET_ACCESSORIES,
-    SET_BOTTOM,
+    SET_BOTTOMS,
     SET_FACE,
     SET_EYEBROWS,
     SET_EYES,
     SET_MOUTH,
+    SET_NOSE,
 } from '../constants/action-types';
 
 export function setAvatar(payload) {
@@ -27,12 +28,12 @@ export function setBase(payload) {
     return {type: SET_BASE, payload}
 }
 
-export function setTop(payload) {
-    return {type: SET_TOP, payload}
+export function setTops(payload) {
+    return {type: SET_TOPS, payload}
 }
 
-export function setBottom(payload) {
-    return {type: SET_BOTTOM, payload}
+export function setBottoms(payload) {
+    return {type: SET_BOTTOMS, payload}
 }
 
 export function setFace(payload) {
@@ -53,6 +54,10 @@ export function setMouth(payload) {
 
 export function setHair(payload) {
     return {type: SET_HAIR, payload}
+}
+
+export function setNose(payload) {
+    return {type: SET_NOSE, payload}
 }
 
 export function setAccessories(payload) {

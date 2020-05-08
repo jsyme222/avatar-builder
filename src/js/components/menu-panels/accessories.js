@@ -68,7 +68,7 @@ function AccessoriesTab(props) {
         if(props.accessories.length >= 1){
                 let e = []
                 props.accessories.map((ace) => 
-                    e.push(ace.pk)
+                    e.push(ace.id)
                 )
                 setEquipped(e);
         }else {
@@ -99,8 +99,8 @@ function AccessoriesTab(props) {
                         accessories.map((option, index) => 
                             (option.gender === props.gender || option.gender === "UNISEX") ?
                                     <Paper 
-                                        className={(equipped.includes(option.pk)) ? classes.baseOptionChosen : classes.baseOptionContainer } 
-                                        onClick={() => handleClick(option.pk, option.image, option.title)}
+                                        className={(equipped.includes(option.id)) ? classes.baseOptionChosen : classes.baseOptionContainer } 
+                                        onClick={() => handleClick(option.id, option.image, option.title)}
                                         key={index}
                                         >
                                         <img src={option.image.thumbnail} alt={option.alt} className={classes.baseOptionImage} />

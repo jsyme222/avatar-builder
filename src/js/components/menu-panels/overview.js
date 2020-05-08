@@ -16,6 +16,7 @@ const mapStateToProps = state => {
 }
 
 function OverviewTab(props) {
+    // eslint-disable-next-line
     const [equipped, setEquipped] = useState(null);
     const useStyles = makeStyles((theme) => ({
         root: {

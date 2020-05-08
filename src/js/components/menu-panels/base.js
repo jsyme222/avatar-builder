@@ -3,33 +3,38 @@ import {
     Paper,
     makeStyles,
     Typography,
-    Switch,
+    FormControl,
+    MenuItem,
+    Select,
+    Input,
     Grid,
     Button
 } from '@material-ui/core';
+import ItemsList from '../items/items-list';
 import { connect } from 'react-redux';
-import { setAvatar, setBase, setGender } from '../../redux/actions/index';
+import { setBase, setGender, setLayers } from '../../redux/actions/index';
 import { APIHandler } from '../../conf';
 
 const mapStateToProps = state => {
     return {
         base: state.layers.base,
-        username: state.avatar.username,
         gender: state.avatar.gender,
     }
 };
 const mapDispatchToProps = dispatch => {
     return {
-        setAvatar: avatar => dispatch(setAvatar(avatar)),
         setBase: base => dispatch(setBase(base)),
         setGender: gender => dispatch(setGender(gender)),
+        setLayers: layers => dispatch(setLayers(layers)),
     }
 };
 
 function BaseTab(props) {
     const useStyles = makeStyles((theme) => ({
-        root: {
-
+        formControl: {
+          margin: theme.spacing(1),
+          minWidth: 120,
+          maxWidth: 300,
         },
         header: {
             padding: 0,
@@ -67,21 +72,31 @@ function BaseTab(props) {
     }));
     const classes = useStyles();
     const [baseOptions, setBaseOptions] = useState(null);
-    const [gender, setGender] = useState(null);
+    const [genderSelections, setGenderSelections] = useState([]);
+    const [gender, setGender] = useState("Male");
 
-    const handleClick = (image, title, newGender, pk) => {
-        props.setBase(
-            {
-                title: title,
-                image: image,
-                gender: newGender,
-                pk: pk
-            }
-        )
-        props.setGender(newGender);
+    const ITEM_HEIGHT = 48;
+    const ITEM_PADDING_TOP = 8;
+    const MenuProps = {
+      PaperProps: {
+        style: {
+          maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+          width: 250,
+        },
+      },
     };
+
+    const handleClick = (base) => {
+        props.setBase([base, ]); // base must be set inside an array
+        props.setGender(base.gender);  // gender is serialized as gender: { "title": "Male" }
+    };
+
+    const handleStrip = (event) => {
+        props.setLayers([])
+    }
+
     const handleChange = (event) => {
-        let newGender = (gender === 'MALE') ? 'FEMALE' : 'MALE';
+        let newGender = event.target.value;
         setGender(newGender);
     }
 
@@ -89,16 +104,19 @@ function BaseTab(props) {
         if(!baseOptions){
             APIHandler('baseImages')
             .then((bases) => setBaseOptions(bases.results));
-            // let options = require('./test-data/base-data.json');
-            // setBaseOptions(options);
         }
     }, [baseOptions, ]);
 
     useEffect(() => {
-        if(!gender) {
-            setGender(props.gender)
+        setGender(props.gender)
+    }, [props.gender, ]);
+
+    useEffect(() => {
+        if(!genderSelections.length) {
+            APIHandler('genders')
+            .then((genders) => setGenderSelections(genders.results));
         }
-    }, [gender, props]);
+    }, [genderSelections, ]);
 
     return (
         <Paper>
@@ -109,27 +127,30 @@ function BaseTab(props) {
             <Paper className={classes.baseContainer}>
                 {
                     Array.isArray(baseOptions) && 
-                        baseOptions.map((option) => 
-                            (option.gender === gender || option.gender === "UNISEX") ?
-                                    <Paper 
-                                        className={(props.base.pk === option.pk) ? classes.baseOptionChosen : classes.baseOptionContainer } 
-                                        onClick={() => handleClick(option.image, option.title, option.gender, option.pk)}
-                                        key={option.pk}
-                                        >
-                                        <img src={option.image.image} alt={option.alt} className={classes.baseOptionImage} />
-                                    </Paper>
-                                    : null
-                        )
+                        <ItemsList 
+                            items={baseOptions}
+                            onClickAction={handleClick}
+                            selectedGender={gender}
+                            />
                 }
             </Paper>
             <div>
-                <p>Gender</p>
-                Female
-                <Switch
-                    checked={gender === "MALE"}
-                    onChange={handleChange}
-                />
-                Male
+                <FormControl className={classes.formControl}>
+                        <Select
+                        labelId="gender-select"
+                        id="gender-select"
+                        value={gender || ""}
+                        onChange={handleChange}
+                        input={<Input />}
+                        MenuProps={MenuProps}
+                        >
+                        {(genderSelections.length >= 1) && genderSelections.map((gender) => (
+                            <MenuItem key={gender.id + gender.title} value={gender.title}>
+                            {gender.title}
+                            </MenuItem>
+                        ))}
+                        </Select>
+                </FormControl>
             </div>
                 <Grid container>
                     <Grid item xs={12} className={classes.buttonInfo}>
@@ -137,7 +158,7 @@ function BaseTab(props) {
                         <p>Reset your avatar to the default equipment and settings</p>
                     </Grid>
                     <Grid item xs={12} className={classes.buttonInfo}>
-                        <Button variant={"outlined"}>Strip</Button>
+                        <Button variant={"outlined"} onClick={handleStrip}>Strip</Button>
                         <p>Who needs clothes anyway!</p>
                     </Grid>
                 </Grid>

@@ -5,7 +5,7 @@ import {
     Typography,
 } from '@material-ui/core';
 import { connect } from 'react-redux';
-import { setBottom } from '../../redux/actions/index';
+import { setBottoms } from '../../redux/actions/index';
 import { APIHandler } from '../../conf';
 
 const mapStateToProps = state => {
@@ -16,13 +16,12 @@ const mapStateToProps = state => {
 };
 const mapDispatchToProps = dispatch => {
     return {
-        setBottom: bottom => dispatch(setBottom(bottom)),
+        setBottoms: bottoms => dispatch(setBottoms(bottoms)),
     }
 };
 
 function BottomsTab(props) {
     const [bottoms, setBottoms] = useState(null);
-    const [equipped, setEquipped] = useState(null);
     const useStyles = makeStyles((theme) => ({
         root: {
 
@@ -87,8 +86,8 @@ function BottomsTab(props) {
                         bottoms.map((option, index) => 
                             (option.gender === props.gender || option.gender === "UNISEX") ?
                                     <Paper 
-                                        className={(option.pk === props.bottom.pk) ? classes.baseOptionChosen : classes.baseOptionContainer } 
-                                        onClick={() => handleClick(option.pk, option.image, option.title)}
+                                        className={(option.id === props.bottom.id) ? classes.baseOptionChosen : classes.baseOptionContainer } 
+                                        onClick={() => handleClick(option.id, option.image, option.title)}
                                         key={index}
                                         >
                                         <img src={option.image.thumbnail} alt={option.alt} className={classes.baseOptionImage} />

@@ -5,7 +5,9 @@ import {
     Typography,
 } from '@material-ui/core';
 import { connect } from 'react-redux';
-import { setTop } from '../../redux/actions/index';
+import { setTops } from '../../redux/actions/index';
+import { APIHandler } from '../../conf';
+import ItemsList from '../items/items-list';
 
 const mapStateToProps = state => {
     return {
@@ -15,7 +17,7 @@ const mapStateToProps = state => {
 };
 const mapDispatchToProps = dispatch => {
     return {
-        setTop: top => dispatch(setTop(top)),
+        setTops: tops => dispatch(setTops(tops)),
     }
 };
 
@@ -53,41 +55,29 @@ function TopsTab(props) {
 
     useEffect(() => {
         if(!tops) {
-            let topsData = require('./test-data/tops-data.json');
-            setTops(topsData)
+            APIHandler('tops')
+            .then((data) => setTops(data.results))
         }
     }, [tops, ]);
 
-    const handleClick = (image, title, pk) => {
-        props.setTop(
-            {
-                title: title,
-                image: image,
-                pk: pk,
-            }
-        )
+    const handleClick = (tops) => {
+        props.setTops([tops, ])
     };
 
     return (
         <Paper>
+            {console.log(tops)}
             <Typography component={"div"}>Tops</Typography>
             <div className={classes.header}>
                 <p>Choose your Top</p>
             </div>
             <Paper className={classes.baseContainer}>
                 {
-                    tops && 
-                        tops.map((top, index) => 
-                            (top.gender === props.gender) ?
-                                    <Paper 
-                                        className={(top.pk === props.top.pk) ? classes.baseOptionChosen : classes.baseOptionContainer } 
-                                        onClick={() => handleClick(top.image, top.title, top.pk)}
-                                        key={index}
-                                        >
-                                        <img src={top.thumbnail} alt={top.alt} className={classes.baseOptionImage} />
-                                    </Paper>
-                                    : null
-                        )
+                    Array.isArray(tops) && 
+                        <ItemsList 
+                            items={tops} 
+                            onClickAction={handleClick}
+                        />
                 }
             </Paper>
         </Paper>

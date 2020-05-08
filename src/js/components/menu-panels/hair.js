@@ -4,8 +4,10 @@ import {
     makeStyles,
     Typography,
 } from '@material-ui/core';
+import ItemsList from '../items/items-list';
 import { connect } from 'react-redux';
 import { setHair } from '../../redux/actions/index';
+import { APIHandler } from '../../conf';
 
 const mapStateToProps = state => {
     return {
@@ -22,9 +24,6 @@ const mapDispatchToProps = dispatch => {
 function HairTab(props) {
     const [hair, setHair] = useState(null);
     const useStyles = makeStyles((theme) => ({
-        root: {
-
-        },
         header: {
             padding: 0,
             margin: 5,
@@ -57,29 +56,15 @@ function HairTab(props) {
 
     useEffect(() => {
         if(!hair) {
-            let hairData = require('./test-data/hair-data.json');
-            setHair(hairData)
+            APIHandler('hair')
+            .then((data) => {
+                setHair(data)
+            })
         }
     }, [hair, ]);
 
-    const handleClick = (pk, image, title, front, back=null) => {
-        props.setHair(
-            {
-                pk: pk,
-                title: title,
-                image: image,
-                layer: [
-                    {
-                        layer: 50,
-                        image: front.image
-                    },
-                    {
-                        layer: 0,
-                        image: back.image
-                    }
-                ]
-            }
-        )
+    const handleClick = (hair) => {
+        props.setHair([hair, ])
     };
 
     return (
@@ -88,22 +73,24 @@ function HairTab(props) {
             <div className={classes.header}>
                 <p>Choose your hair</p>
             </div>
-            <Paper className={classes.baseContainer}>
                 {
-                    hair && 
-                        hair.map((option, index) => 
-                            (option.gender === props.gender || option.gender === "Unisex") ?
-                                    <Paper 
-                                        className={(option.pk === props.hair.pk) ? classes.baseOptionChosen : classes.baseOptionContainer } 
-                                        onClick={() => handleClick(option.pk, option.image, option.title, option.layer[0], (option.layer[1] && option.layer[1]))}
-                                        key={index}
-                                        >
-                                        <img src={option.thumbnail} alt={option.alt} className={classes.baseOptionImage} />
-                                    </Paper>
-                                    : null
+                    hair && Object.entries(hair).length >= 1 ?
+                        Object.entries(hair).map((h, index) => // Loop through all hair categories
+                        Array.isArray(h[1]) && h[1].length >= 1 ?
+                        
+                                <Paper key={index} className={classes.baseContainer}>
+                                    <Typography component={"div"}>{h[0]}</Typography>
+                                    <ItemsList 
+                                        items={h[1]}
+                                        onClickAction={handleClick}
+                                        />
+                                </Paper>
+                            :
+                            null
                         )
+                        :
+                        "No hair right now"
                 }
-            </Paper>
         </Paper>
     )
 }

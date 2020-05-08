@@ -6,8 +6,20 @@ import {
 } from '@material-ui/core';
 import AvatarBuilder from './js/components/builder/avatar-builder';
 import './App.css';
-import { setAvatar, setLayers } from './js/redux/actions/index';
+import { 
+  setAvatar, 
+  setLayers, 
+  setBase,
+  setFace,
+  setGender,
+  setEyes,
+  setHair,
+  setTops,
+  setBottoms,
+  setMouth
+} from './js/redux/actions/index';
 import { connect } from 'react-redux';
+import { APIHandler } from './js/conf';
 
 const mapStateToProps = state => {
   return {
@@ -17,8 +29,16 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
+    setGender: gender => dispatch(setGender(gender)),
     setAvatar: avatar => dispatch(setAvatar(avatar)),
     setLayers: layers => dispatch(setLayers(layers)),
+    setBase: base => dispatch(setBase(base)),
+    setFace: face => dispatch(setFace(face)),
+    setEyes: eyes => dispatch(setEyes(eyes)),
+    setHair: hair => dispatch(setHair(hair)),
+    setTops: tops => dispatch(setTops(tops)),
+    setBottoms: bottoms => dispatch(setBottoms(bottoms)),
+    setMouth: mouth => dispatch(setMouth(mouth)),
   }
 };
 
@@ -59,24 +79,24 @@ function App(props) {
   }));
   const classes = useStyles();
 
+  // eslint-disable-next-line
   const [avatar, setAvatar] = useState(null);
-  const [layers, setLayers] = useState(null);
 
   useEffect(() => {
     if(!avatar){
-      let test_avatar = require('./js/test-avatar-data/test-avatar.json');
-      setAvatar(test_avatar);
-      props.setAvatar(test_avatar);
+      APIHandler([`getAvatar`, 'jdogg'])
+      .then((data) => {
+        // console.log(data);
+        props.setGender(data.gender.title);
+        props.setBase(data.base);
+        props.setEyes(data.face.eyes);
+        props.setHair(data.hair);
+        props.setTops(data.tops);
+        props.setBottoms(data.bottoms);
+        props.setMouth(data.face.mouths);
+      });
     }
-  }, [avatar, props]);
-
-  useEffect(() => {
-    if(!layers){
-      let test_layers = require('./js/test-avatar-data/test-layers.json');
-      setLayers(test_layers);
-      props.setLayers(test_layers);
-    }
-  }, [layers, props]);
+  }, [avatar,]);
 
   return (
     <ThemeProvider theme={theme} >

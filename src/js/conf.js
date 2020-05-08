@@ -1,10 +1,22 @@
-export const URL = "http://192.168.68.107:8000";
+export const URL = "http://192.168.0.34:8000";
+
+export function fullURL(url) {
+    let fullURL = url;
+    if(url.slice(0, 4) !== "http"){
+        fullURL = URL + url
+    }
+    return fullURL;
+}
 
 const PATHS = {
+    'getAvatar': '/api/avatar/view/',
     'baseImages': '/api/avatar/base-images',
+    'genders': '/api/avatar/genders',
     'accessories': '/api/item/view/accessories',
     'bottoms': '/api/item/view/bottoms',
     'faces': '/api/item/view/faces',
+    'hair': '/api/item/view/hair',
+    'tops': '/api/item/view/top',
 };
 
 const DEFAULT_OPTIONS = {
@@ -16,7 +28,11 @@ const DEFAULT_OPTIONS = {
 };
 
 export function APIHandler(url, options={}) {
-    let API_URL = URL + PATHS[url];
+    let API_URL = !Array.isArray(url) ?
+        URL + PATHS[url]
+        :
+        URL + PATHS[url[0]] + url[1]
+        ;
 
     let OPTIONS = {
         ...DEFAULT_OPTIONS,
