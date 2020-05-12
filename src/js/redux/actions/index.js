@@ -7,6 +7,7 @@ import {
     SET_GENDER,
     SET_TOPS,
     SET_HAIR,
+    SET_FACIALHAIR,
     SET_ACCESSORIES,
     SET_BOTTOMS,
     SET_FACE,
@@ -54,6 +55,10 @@ export function setMouth(payload) {
 
 export function setHair(payload) {
     return {type: SET_HAIR, payload}
+}
+
+export function setFacialhair(payload) {
+    return {type: SET_FACIALHAIR, payload}
 }
 
 export function setNose(payload) {

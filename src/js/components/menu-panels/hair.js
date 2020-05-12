@@ -6,23 +6,28 @@ import {
 } from '@material-ui/core';
 import ItemsList from '../items/items-list';
 import { connect } from 'react-redux';
-import { setHair } from '../../redux/actions/index';
+import { setHair, setFacialhair } from '../../redux/actions/index';
 import { APIHandler } from '../../conf';
+import SetEquipped from '../../custom-hooks/set-equipped';
 
 const mapStateToProps = state => {
     return {
         hair: state.layers.hair,
+        facialHair: state.layers.facialHair,
+        allHair: [...state.layers.hair, ...state.layers.facialHair],
         gender: state.avatar.gender,
     }
 };
 const mapDispatchToProps = dispatch => {
     return {
         setHair: hair => dispatch(setHair(hair)),
+        setFacialhair: facialHair => dispatch(setFacialhair(facialHair)),
     }
 };
 
 function HairTab(props) {
     const [hair, setHair] = useState(null);
+    const equipped = SetEquipped(props.allHair);
     const useStyles = makeStyles((theme) => ({
         header: {
             padding: 0,
@@ -48,11 +53,13 @@ function HairTab(props) {
             border: '2px solid grey',
             padding: 0,
         },
-        baseOptionImage: {
-            // width: 150,
-        }
     }));
     const classes = useStyles();
+
+    const SUBCATEGORIES = {
+        'HEAD-HAIR': props.setHair,
+        'FACIAL-HAIR': props.setFacialhair,
+    };
 
     useEffect(() => {
         if(!hair) {
@@ -64,11 +71,19 @@ function HairTab(props) {
     }, [hair, ]);
 
     const handleClick = (hair) => {
-        props.setHair([hair, ])
+        let field = hair.subcategory;
+        let data;
+        if(equipped.idArray.includes(hair.id)){
+            data = []
+        }else{
+            data = [hair, ]
+        }
+            SUBCATEGORIES[field](data)
     };
 
     return (
         <Paper>
+            {console.log(props.facialHair.concat(props.hair))}
             <Typography component={"div"}>Hair</Typography>
             <div className={classes.header}>
                 <p>Choose your hair</p>
@@ -82,6 +97,7 @@ function HairTab(props) {
                                     <Typography component={"div"}>{h[0]}</Typography>
                                     <ItemsList 
                                         items={h[1]}
+                                        equipped={equipped}
                                         onClickAction={handleClick}
                                         />
                                 </Paper>

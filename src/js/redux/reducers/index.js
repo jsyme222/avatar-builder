@@ -6,6 +6,7 @@ import {
     SET_TOPS,
     SET_BOTTOMS,
     SET_HAIR,
+    SET_FACIALHAIR,
     SET_LAYERS,
     SET_GENDER,
     SET_ACCESSORIES,
@@ -20,6 +21,7 @@ const LAYERS = {
         base: [],
         face: {},
         hair: [],
+        facialHair: [],
         hat: {},
         tops: [],
         bottoms: [],
@@ -38,8 +40,8 @@ const STATE = {
     loading: true,
     sidebarOpen: false,
     openPanel: {
-        tab: 4,
-        title: 'Hair'
+        tab: 2,
+        title: 'Tops'
     },
     avatar: AVATAR,
     layers: LAYERS
@@ -132,6 +134,14 @@ function rootReducer(state=STATE, action) {
             layers: {
                 ...state.layers,
                 hair: action.payload
+            }
+        });
+    }
+    if(action.type === SET_FACIALHAIR) {
+        return Object.assign({}, state, {
+            layers: {
+                ...state.layers,
+                facialHair: action.payload
             }
         });
     }

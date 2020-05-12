@@ -11,6 +11,13 @@ const mapStateToProps = state => {
 
 function ItemsList(props) {
     const [gender, setGender] = useState(null);
+    const [equipped, setEquipped] = useState([]);
+
+    useEffect(() => {
+        if(props.equipped){
+            setEquipped(props.equipped.idArray)
+        }
+    }, [props.equipped, ]);
 
     useEffect(() => {
         if(props.selectedGender){
@@ -18,16 +25,16 @@ function ItemsList(props) {
             }else if(props.gender){
                 setGender(props.gender)
             }
-    }, [props.selectedGender, props.gender])
+    }, [props.selectedGender, props.gender]);
     
     return (
         <>
         {props.items.length >= 1 ?
             props.items.map((option) => 
                 (!option.gender || ((option.gender.title || option.gender) === gender)) ?
-                <div key={option.id}>
-                    <Item item={option} onClickAction={() => props.onClickAction(option)} />
-                </div>
+                    <div key={option.id}>
+                        <Item item={option} onClickAction={props.onClickAction} equipped={() => equipped.includes(option.id)} />
+                    </div>
                     : null
                 )
             :

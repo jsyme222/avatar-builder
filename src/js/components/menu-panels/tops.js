@@ -8,10 +8,11 @@ import { connect } from 'react-redux';
 import { setTops } from '../../redux/actions/index';
 import { APIHandler } from '../../conf';
 import ItemsList from '../items/items-list';
+import SetEquipped from '../../custom-hooks/set-equipped';
 
 const mapStateToProps = state => {
     return {
-        top: state.layers.top,
+        tops: state.layers.tops,
         gender: state.avatar.gender,
     }
 };
@@ -23,6 +24,7 @@ const mapDispatchToProps = dispatch => {
 
 function TopsTab(props) {
     const [tops, setTops] = useState(null);
+    const equipped = SetEquipped(props.tops);
     const useStyles = makeStyles((theme) => ({
         root: {
 
@@ -60,13 +62,18 @@ function TopsTab(props) {
         }
     }, [tops, ]);
 
-    const handleClick = (tops) => {
-        props.setTops([tops, ])
+    const handleClick = (clickedTop) => {
+        if(equipped.idArray.includes(clickedTop.id)){
+            let tops = props.tops.filter(top => top.id !== clickedTop.id)
+            props.setTops(tops)
+        }else{
+            // #TODO Assign top by z-index, layer by array index?? or subcategory??
+            props.setTops([...props.tops, clickedTop])
+        }
     };
 
     return (
         <Paper>
-            {console.log(tops)}
             <Typography component={"div"}>Tops</Typography>
             <div className={classes.header}>
                 <p>Choose your Top</p>
@@ -77,6 +84,7 @@ function TopsTab(props) {
                         <ItemsList 
                             items={tops} 
                             onClickAction={handleClick}
+                            equipped={equipped}
                         />
                 }
             </Paper>

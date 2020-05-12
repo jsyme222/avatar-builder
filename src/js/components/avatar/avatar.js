@@ -2,7 +2,6 @@ import React from 'react';
 import {
     makeStyles,
 } from '@material-ui/core';
-import ItemLayer from '../item-layer/item-layer';
 import { connect } from 'react-redux';
 import { setAvatar } from '../../redux/actions/index';
 import { fullURL } from '../../conf';
@@ -42,23 +41,38 @@ const Layers = (props) => {
          * If the image is composed of different layers then each layer will be
          * decomposed into a seperate img tag.
          */
-        let fixedTo = {
-            'FRONT': 2,
-            'BACK': -1,
+
+        function ItemLayer(props) {
+            return (
+                <div style={{...props.style, position: 'absolute'}}>
+                    <img 
+                        src={props.src}
+                        alt={props.alt}
+                        />
+                </div>
+            )
+        }
+
+        let fixedTo = (i) => {
+            return {
+                'FRONT': 2 * i,
+                'BACK': -1,
+            }
         };
         let combined = [];
         layers.map(function(l) {
-            if(l.id){
+            if(l && l.id){
                 if(l.has_layers) {
                     // Loop through layers of item, assigning z-index as needed
                     for(let i = 1; i < 6; i++){
+                        let z = fixedTo(combined.length);
                         if(l.image[`layer${i}`]){
                             combined.push(
                                 <ItemLayer
                                     key={l.id + `${i * i}`} 
                                     src={fullURL(l.image[`layer${i}`].image)} 
                                     alt={l.alt} 
-                                    style={{zIndex: fixedTo[l.image[`layer${i}`].fixed_to]}}
+                                    style={{ zIndex: z[l.image[`layer${i}`].fixed_to] || l.layer }}
                                 />
                             )
                         }
@@ -101,6 +115,17 @@ const Layers = (props) => {
     function buildHair(){
         let hair = layers.hair;
         let allHairLayers = [];
+        hair && Object.entries(hair).length > 0 &&
+            Object.entries(hair).map((h) => 
+                allHairLayers.push(h[1])
+            )
+        let combinedLayers = (allHairLayers.length >= 1) ? createLayers(allHairLayers) : []
+        return combinedLayers
+    }   
+
+    function buildFacialHair(){
+        let hair = layers.facialHair;
+        let allHairLayers = [];
         Object.entries(hair).length > 0 &&
             Object.entries(hair).map((h) => 
                 allHairLayers.push(h[1])
@@ -112,7 +137,7 @@ const Layers = (props) => {
     function buildFace(){
         let face = layers.face;
         let allFaceLayers = [];
-        Object.entries(face).length > 0 &&
+        face && Object.entries(face).length > 0 &&
             Object.entries(face).map((layer) => 
                 allFaceLayers.push(layer[1])
             );
@@ -123,10 +148,11 @@ const Layers = (props) => {
 
     return [
         ...buildBase(),
-        ...buildFace(),
-        ...buildHair(),
-        ...buildBottoms(),
         ...buildTops(),
+        ...buildHair(),
+        ...buildFacialHair(),
+        ...buildBottoms(),
+        ...buildFace(),
     ]
 };
 

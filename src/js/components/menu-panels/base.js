@@ -14,6 +14,7 @@ import ItemsList from '../items/items-list';
 import { connect } from 'react-redux';
 import { setBase, setGender, setLayers } from '../../redux/actions/index';
 import { APIHandler } from '../../conf';
+import SetEquipped from '../../custom-hooks/set-equipped';
 
 const mapStateToProps = state => {
     return {
@@ -30,6 +31,10 @@ const mapDispatchToProps = dispatch => {
 };
 
 function BaseTab(props) {
+    const [baseOptions, setBaseOptions] = useState(null);
+    const [genderSelections, setGenderSelections] = useState([]);
+    const [gender, setGender] = useState("Male");
+    const equipped = SetEquipped(props.base);
     const useStyles = makeStyles((theme) => ({
         formControl: {
           margin: theme.spacing(1),
@@ -71,9 +76,6 @@ function BaseTab(props) {
         }
     }));
     const classes = useStyles();
-    const [baseOptions, setBaseOptions] = useState(null);
-    const [genderSelections, setGenderSelections] = useState([]);
-    const [gender, setGender] = useState("Male");
 
     const ITEM_HEIGHT = 48;
     const ITEM_PADDING_TOP = 8;
@@ -131,6 +133,7 @@ function BaseTab(props) {
                             items={baseOptions}
                             onClickAction={handleClick}
                             selectedGender={gender}
+                            equipped={equipped}
                             />
                 }
             </Paper>

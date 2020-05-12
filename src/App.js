@@ -14,6 +14,7 @@ import {
   setGender,
   setEyes,
   setHair,
+  setFacialhair,
   setTops,
   setBottoms,
   setMouth
@@ -36,6 +37,7 @@ const mapDispatchToProps = dispatch => {
     setFace: face => dispatch(setFace(face)),
     setEyes: eyes => dispatch(setEyes(eyes)),
     setHair: hair => dispatch(setHair(hair)),
+    setFacilhair: facialHair => dispatch(setFacialhair(facialHair)),
     setTops: tops => dispatch(setTops(tops)),
     setBottoms: bottoms => dispatch(setBottoms(bottoms)),
     setMouth: mouth => dispatch(setMouth(mouth)),
@@ -86,14 +88,15 @@ function App(props) {
     if(!avatar){
       APIHandler([`getAvatar`, 'jdogg'])
       .then((data) => {
-        // console.log(data);
-        props.setGender(data.gender.title);
-        props.setBase(data.base);
-        props.setEyes(data.face.eyes);
-        props.setHair(data.hair);
-        props.setTops(data.tops);
-        props.setBottoms(data.bottoms);
-        props.setMouth(data.face.mouths);
+        console.log(data);
+        props.setGender(data.gender.title ? data.gender.title : "");
+        props.setBase(data.base ? data.base : []);
+        props.setEyes(data.face.eyes ? data.face.eyes : []);
+        props.setHair([data.hair['head-hair'] ? data.hair['head-hair'] : [], ]);
+        props.setFacilhair([data.hair['facial-hair'] ? data.hair['facial-hair'] : [], ]);
+        props.setTops(data.tops ? data.tops : []);
+        props.setBottoms(data.bottoms ? data.bottoms : []);
+        props.setMouth(data.face.mouths ? data.face.mouths : []);
       });
     }
   }, [avatar,]);
