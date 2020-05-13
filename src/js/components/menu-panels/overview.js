@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     Paper,
     makeStyles,
@@ -6,22 +6,21 @@ import {
     Typography
 } from '@material-ui/core';
 import { connect } from 'react-redux';
+import ItemsList from '../items/items-list';
+import SetEquipped from '../../custom-hooks/set-equipped';
 
 const mapStateToProps = state => {
     return {
         username: state.avatar.username,
         gender: state.avatar.gender,
         outfitName: state.avatar.outfitName,
+        layers : state.layers,
     }
 }
 
 function OverviewTab(props) {
-    // eslint-disable-next-line
-    const [equipped, setEquipped] = useState(null);
+    const [equipped, setEquipped] = useState([]);
     const useStyles = makeStyles((theme) => ({
-        root: {
-
-        },
         username: {
             padding: 0,
             margin: 5,
@@ -38,6 +37,11 @@ function OverviewTab(props) {
     }));
     const classes = useStyles();
 
+    useEffect(() => {
+        let layers = Object.entries(props.layers);
+        setEquipped(props.layers);
+    })
+
     return (
         <Paper>
             <Typography component={"div"}>Overview</Typography>
@@ -52,20 +56,16 @@ function OverviewTab(props) {
                 <Grid item xs={6}>
                     <Paper className={classes.headerBox}>
                         <p>Outfit</p>
-                        <h4>{props.outfitName || "N/A"}</h4>
+                        <h4>{props.outfitName || "Name your outfit!"}</h4>
                     </Paper>
                 </Grid>
                 <Grid item xs={12}>
                     <Typography component={"div"}>Equipped</Typography>
                     <Paper className={classes.equipmentBox}>
-                        {
-                            equipped ?
-                                equipped.map((item) => 
-                                <h1>{item}</h1>
-                                )
-                                :
-                                <p>Nothing equipped</p>
-                        }
+                        <ItemsList
+                            items={equipped || []}
+                            equipped={equipped || []}
+                        />
                     </Paper>
                 </Grid>
             </Grid>

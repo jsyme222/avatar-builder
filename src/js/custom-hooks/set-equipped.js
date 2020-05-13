@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function SetEquipped(items){
     const [equipped, setEquipped] = useState({
@@ -7,7 +7,7 @@ export default function SetEquipped(items){
     });
 
     useEffect(() => {
-        console.log(items);
+        // console.log(items);
         if(Array.isArray(items)){
             let idArray = [];
             let equipped = [];

@@ -6,9 +6,11 @@ import {
     SET_TOPS,
     SET_BOTTOMS,
     SET_HAIR,
+    SET_HATS,
     SET_FACIALHAIR,
     SET_LAYERS,
     SET_GENDER,
+    SET_GENDER_SELECTIONS,
     SET_ACCESSORIES,
     SET_EYEBROWS,
     SET_EYES,
@@ -19,10 +21,15 @@ import {
 
 const LAYERS = {
         base: [],
-        face: {},
+        face: {
+            eyebrows: {},
+            eyes: {},
+            nose: {},
+            mouth: {}
+        },
         hair: [],
         facialHair: [],
-        hat: {},
+        hats: [],
         tops: [],
         bottoms: [],
         feet: [],
@@ -40,11 +47,12 @@ const STATE = {
     loading: true,
     sidebarOpen: false,
     openPanel: {
-        tab: 2,
-        title: 'Tops'
+        id: 0,
+        title: 'Overview'
     },
     avatar: AVATAR,
-    layers: LAYERS
+    layers: LAYERS,
+    genderSelections: [],
 };
 
 function rootReducer(state=STATE, action) {
@@ -137,6 +145,14 @@ function rootReducer(state=STATE, action) {
             }
         });
     }
+    if(action.type === SET_HATS) {
+        return Object.assign({}, state, {
+            layers: {
+                ...state.layers,
+                hats: action.payload
+            }
+        });
+    }
     if(action.type === SET_FACIALHAIR) {
         return Object.assign({}, state, {
             layers: {
@@ -161,6 +177,11 @@ function rootReducer(state=STATE, action) {
             }
         });
     }
+    if(action.type === SET_GENDER_SELECTIONS) {
+        return Object.assign({}, state, {
+            genderSelections: action.payload
+        });
+    }
     if(action.type === SET_SIDEBAR) {
         return Object.assign({}, state, {
             sidebarOpen: action.payload
@@ -168,7 +189,7 @@ function rootReducer(state=STATE, action) {
     }
     if(action.type === SET_PANEL) {
         return Object.assign({}, state, {
-            openPanel: action.payload
+            openPanel: action.payload,
         });
     }
     return state;

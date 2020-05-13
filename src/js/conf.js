@@ -1,4 +1,4 @@
-export const URL = "http://192.168.0.25:8000";
+export const URL = "http://192.168.0.34:8000";
 
 export function fullURL(url) {
     let fullURL = url;
@@ -14,8 +14,9 @@ const PATHS = {
     'genders': '/api/avatar/genders',
     'accessories': '/api/item/view/accessories',
     'bottoms': '/api/item/view/bottoms',
-    'faces': '/api/item/view/faces',
+    'face': '/api/item/view/faces',
     'hair': '/api/item/view/hair',
+    'hats': '/api/item/view/hat',
     'tops': '/api/item/view/top',
 };
 

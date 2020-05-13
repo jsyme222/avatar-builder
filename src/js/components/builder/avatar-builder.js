@@ -5,17 +5,10 @@ import {
     Container,
 } from '@material-ui/core';
 import BuilderMenuPageFrame from './page-frame/page-frame';
-import MenuDrawer from './page-frame/menu-drawer/menu-drawer';
-import BuilderAvatar from '../avatar/avatar';
-import { connect } from 'react-redux';
+import MenuDrawer from '../menu/menu-components/menu-drawer/menu-drawer';
+import Avatar from '../avatar/avatar';
 
-const mapStateToProps = state => {
-    return {
-        avatar: state.avatar,
-    }
-}
-
-function AvatarBuilder(props) {
+export default function AvatarBuilder(props) {
     const useStyles = makeStyles((theme) => ({
         root: {
             display: 'flex',
@@ -34,11 +27,9 @@ function AvatarBuilder(props) {
                 <MenuDrawer />
                 <Paper className={classes.root}>
                     <BuilderMenuPageFrame>
-                        <BuilderAvatar />
+                        <Avatar />
                     </BuilderMenuPageFrame>
                 </Paper>
             </Container>
     )
 }
-
-export default connect(mapStateToProps)(AvatarBuilder);

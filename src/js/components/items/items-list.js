@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import Item from './item';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 const mapStateToProps = state => {
@@ -31,7 +30,7 @@ function ItemsList(props) {
         <>
         {props.items.length >= 1 ?
             props.items.map((option) => 
-                (!option.gender || ((option.gender.title || option.gender) === gender)) ?
+                ((!option.gender || gender === 'All') || ((option.gender.title || option.gender) === gender)) ?
                     <div key={option.id}>
                         <Item item={option} onClickAction={props.onClickAction} equipped={() => equipped.includes(option.id)} />
                     </div>
@@ -42,10 +41,6 @@ function ItemsList(props) {
             }
         </>
     )
-}
-
-ItemsList.propTypes = {
-    items: PropTypes.array.isRequired,
 }
 
 export default connect(mapStateToProps)(ItemsList);

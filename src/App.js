@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import {
   createMuiTheme, 
   ThemeProvider,
@@ -6,43 +6,20 @@ import {
 } from '@material-ui/core';
 import AvatarBuilder from './js/components/builder/avatar-builder';
 import './App.css';
-import { 
-  setAvatar, 
-  setLayers, 
-  setBase,
-  setFace,
-  setGender,
-  setEyes,
-  setHair,
-  setFacialhair,
-  setTops,
-  setBottoms,
-  setMouth
-} from './js/redux/actions/index';
+import SetInitAvatarLayers from './js/custom-hooks/set-init-avatar-layers';
 import { connect } from 'react-redux';
 import { APIHandler } from './js/conf';
+import { setGenderSelections } from './js/redux/actions';
 
-const mapStateToProps = state => {
-  return {
-    avatar: state.avatar
-  }
-};
+/**
+ * Init data is set for the entire redux store in the SetInitAvatarLayers component 
+ */
 
 const mapDispatchToProps = dispatch => {
   return {
-    setGender: gender => dispatch(setGender(gender)),
-    setAvatar: avatar => dispatch(setAvatar(avatar)),
-    setLayers: layers => dispatch(setLayers(layers)),
-    setBase: base => dispatch(setBase(base)),
-    setFace: face => dispatch(setFace(face)),
-    setEyes: eyes => dispatch(setEyes(eyes)),
-    setHair: hair => dispatch(setHair(hair)),
-    setFacilhair: facialHair => dispatch(setFacialhair(facialHair)),
-    setTops: tops => dispatch(setTops(tops)),
-    setBottoms: bottoms => dispatch(setBottoms(bottoms)),
-    setMouth: mouth => dispatch(setMouth(mouth)),
+    setGenderSelections: selections => dispatch(setGenderSelections(selections)),
   }
-};
+}
 
 const theme = createMuiTheme({
   palette: {
@@ -81,28 +58,14 @@ function App(props) {
   }));
   const classes = useStyles();
 
-  // eslint-disable-next-line
-  const [avatar, setAvatar] = useState(null);
-
   useEffect(() => {
-    if(!avatar){
-      APIHandler([`getAvatar`, 'jdogg'])
-      .then((data) => {
-        console.log(data);
-        props.setGender(data.gender.title ? data.gender.title : "");
-        props.setBase(data.base ? data.base : []);
-        props.setEyes(data.face.eyes ? data.face.eyes : []);
-        props.setHair([data.hair['head-hair'] ? data.hair['head-hair'] : [], ]);
-        props.setFacilhair([data.hair['facial-hair'] ? data.hair['facial-hair'] : [], ]);
-        props.setTops(data.tops ? data.tops : []);
-        props.setBottoms(data.bottoms ? data.bottoms : []);
-        props.setMouth(data.face.mouths ? data.face.mouths : []);
-      });
-    }
-  }, [avatar,]);
+        APIHandler('genders')
+        .then((genders) => props.setGenderSelections(genders.results));
+  });
 
   return (
     <ThemeProvider theme={theme} >
+      <SetInitAvatarLayers />
       <div className={classes.root}>
         <AvatarBuilder />
       </div>
@@ -110,4 +73,4 @@ function App(props) {
   );
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(null, mapDispatchToProps)(App);

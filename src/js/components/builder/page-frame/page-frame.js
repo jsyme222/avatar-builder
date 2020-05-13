@@ -5,23 +5,8 @@ import {
 } from '@material-ui/core';
 import MenuPanel from '../../menu-panels/menu-panels';
 import AppBar from '../../menu/menu-components/app-bar/app-bar';
-import { setSidebarOpen } from '../../../redux/actions/index';
-import { connect } from 'react-redux';
 
-const mapStateToProps = state => {
-    return {
-        sidebarOpen: state.sidebarOpen,
-        openPanel: state.openPanel.tab,
-        tabTitle: state.openPanel.title
-    }
-};
-const mapDispatchToProps = dispatch => {
-    return {
-        setSidebarOpen: action => dispatch(setSidebarOpen(action)),
-    }
-}
-
-function PageFrame(props) {
+export default function PageFrame(props) {
     const useStyles = makeStyles((theme) => ({
       root: {
         flexGrow: 1,
@@ -46,5 +31,3 @@ function PageFrame(props) {
         </div>
     )
 }
-
-export default connect(mapStateToProps, mapDispatchToProps)(PageFrame);

@@ -5,7 +5,9 @@ import {
     SET_BASE,
     SET_LAYERS,
     SET_GENDER,
+    SET_GENDER_SELECTIONS,
     SET_TOPS,
+    SET_HATS,
     SET_HAIR,
     SET_FACIALHAIR,
     SET_ACCESSORIES,
@@ -57,6 +59,10 @@ export function setHair(payload) {
     return {type: SET_HAIR, payload}
 }
 
+export function setHats(payload) {
+    return {type: SET_HATS, payload}
+}
+
 export function setFacialhair(payload) {
     return {type: SET_FACIALHAIR, payload}
 }
@@ -71,6 +77,10 @@ export function setAccessories(payload) {
 
 export function setGender(payload) {
     return {type: SET_GENDER, payload}
+}
+
+export function setGenderSelections(payload) {
+    return {type: SET_GENDER_SELECTIONS, payload}
 }
 
 export function setSidebarOpen(payload) {

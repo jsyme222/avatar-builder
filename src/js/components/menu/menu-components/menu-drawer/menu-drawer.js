@@ -17,7 +17,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         setSidebarOpen: action => dispatch(setSidebarOpen(action)),
-        setPanel: panel => dispatch(setPanel({tab: panel})),
+        setPanel: panel => dispatch(setPanel(panel)),
     }
 }
 
@@ -53,7 +53,7 @@ function MenuDrawer(props) {
       
       <List>
         {menuItems.map((text) => (
-          <ListItem button key={text.id} onClick={() => handleMenuClick(text.id)}>
+          <ListItem button key={text.id} onClick={() => handleMenuClick(text)}>
             <ListItemText primary={text.title} />
           </ListItem>
         ))}

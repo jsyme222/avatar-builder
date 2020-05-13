@@ -10,7 +10,7 @@ import {
     Camera,
 } from '@material-ui/icons';
 import MenuIcon from '@material-ui/icons/Menu';
-import { setSidebarOpen, setPanel } from '../../../../redux/actions/index';
+import { setSidebarOpen } from '../../../../redux/actions/index';
 import { connect } from 'react-redux';
 
 const mapStateToProps = state => {
@@ -21,7 +21,6 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         setSidebarOpen: action => dispatch(setSidebarOpen(action)),
-        setPanel: panel => dispatch(setPanel(panel)),
     }
 };
 

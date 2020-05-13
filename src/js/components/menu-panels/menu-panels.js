@@ -5,9 +5,10 @@ import {
 import OverviewTab from './overview';
 import ClosetTab from './closet';
 import BaseTab from './base';
-import FaceTab from './face/face';
+import FaceTab from './face';
 import HairTab from './hair';
 import TopsTab from './tops';
+import HatsTab from './hats';
 import BottomsTab from './bottoms';
 import AccessoriesTab from './accessories';
 import PropTypes from 'prop-types';
@@ -15,7 +16,7 @@ import { connect } from 'react-redux';
 
 const mapStateToProps = state => {
     return {
-        openPanel: state.openPanel.tab,
+        openPanel: state.openPanel.id,
     }
 };
 
@@ -62,6 +63,9 @@ function MenuPanels(props) {
             </TabPanel>
             <TabPanel value={props.openPanel} index={4}>
                 <HairTab />
+            </TabPanel>
+            <TabPanel value={props.openPanel} index={5}>
+                <HatsTab />
             </TabPanel>
             <TabPanel value={props.openPanel} index={6}>
                 <TopsTab />

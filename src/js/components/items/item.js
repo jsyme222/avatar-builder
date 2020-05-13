@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Paper } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import { fullURL } from '../../conf';
 
 const useStyles = makeStyles((theme) => ({
     baseOptionContainer: {
@@ -51,7 +52,7 @@ function Item(props) {
             onClick={(event) => props.onClickAction(props.item)}
             key={props.item.id}
         >
-            <img src={props.item.image.thumbnail || props.item.image.image} alt={props.item.alt} className={classes.baseOptionImage} />
+            <img src={fullURL(props.item.image.thumbnail || props.item.image.image)} alt={props.item.alt} className={classes.baseOptionImage} />
         </Paper>
     )
 }

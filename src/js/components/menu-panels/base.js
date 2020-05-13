@@ -3,10 +3,6 @@ import {
     Paper,
     makeStyles,
     Typography,
-    FormControl,
-    MenuItem,
-    Select,
-    Input,
     Grid,
     Button
 } from '@material-ui/core';
@@ -15,6 +11,7 @@ import { connect } from 'react-redux';
 import { setBase, setGender, setLayers } from '../../redux/actions/index';
 import { APIHandler } from '../../conf';
 import SetEquipped from '../../custom-hooks/set-equipped';
+import GenderOptions from '../gender-options/gender-options';
 
 const mapStateToProps = state => {
     return {
@@ -32,7 +29,6 @@ const mapDispatchToProps = dispatch => {
 
 function BaseTab(props) {
     const [baseOptions, setBaseOptions] = useState(null);
-    const [genderSelections, setGenderSelections] = useState([]);
     const [gender, setGender] = useState("Male");
     const equipped = SetEquipped(props.base);
     const useStyles = makeStyles((theme) => ({
@@ -77,17 +73,6 @@ function BaseTab(props) {
     }));
     const classes = useStyles();
 
-    const ITEM_HEIGHT = 48;
-    const ITEM_PADDING_TOP = 8;
-    const MenuProps = {
-      PaperProps: {
-        style: {
-          maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-          width: 250,
-        },
-      },
-    };
-
     const handleClick = (base) => {
         props.setBase([base, ]); // base must be set inside an array
         props.setGender(base.gender);  // gender is serialized as gender: { "title": "Male" }
@@ -95,11 +80,6 @@ function BaseTab(props) {
 
     const handleStrip = (event) => {
         props.setLayers([])
-    }
-
-    const handleChange = (event) => {
-        let newGender = event.target.value;
-        setGender(newGender);
     }
 
     useEffect(() => {
@@ -112,13 +92,6 @@ function BaseTab(props) {
     useEffect(() => {
         setGender(props.gender)
     }, [props.gender, ]);
-
-    useEffect(() => {
-        if(!genderSelections.length) {
-            APIHandler('genders')
-            .then((genders) => setGenderSelections(genders.results));
-        }
-    }, [genderSelections, ]);
 
     return (
         <Paper>
@@ -137,24 +110,7 @@ function BaseTab(props) {
                             />
                 }
             </Paper>
-            <div>
-                <FormControl className={classes.formControl}>
-                        <Select
-                        labelId="gender-select"
-                        id="gender-select"
-                        value={gender || ""}
-                        onChange={handleChange}
-                        input={<Input />}
-                        MenuProps={MenuProps}
-                        >
-                        {(genderSelections.length >= 1) && genderSelections.map((gender) => (
-                            <MenuItem key={gender.id + gender.title} value={gender.title}>
-                            {gender.title}
-                            </MenuItem>
-                        ))}
-                        </Select>
-                </FormControl>
-            </div>
+            <GenderOptions setGender={setGender}/>
                 <Grid container>
                     <Grid item xs={12} className={classes.buttonInfo}>
                         <Button variant={"outlined"}>Reset</Button>
