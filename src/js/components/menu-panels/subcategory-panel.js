@@ -61,7 +61,7 @@ function SubcategoryPanel(props){
     }, [props.gender, ]);
 
     return (
-        <>
+        <> 
             <GenderOptions setGender={setGender} />
             <Paper>
                 <Typography component={"div"}>{props.title}</Typography>
@@ -71,10 +71,10 @@ function SubcategoryPanel(props){
                     {
                         objects && Object.entries(objects).length >= 1 ?
                             Object.entries(objects).map((h, index) => // Loop through all subcategories
-                            Array.isArray(h[1]) && h[1].length >= 1 ?
+                                Array.isArray(h[1]) && h[1].length >= 1 ?
                             
                                     <Paper key={index} className={classes.baseContainer}>
-                                        {h[0] !== 'results' && 
+                                        {h[0] !== 'generic' && 
                                             <Typography component={"div"}>{h[0]}</Typography>}
                                         <ItemsList 
                                             items={h[1]}

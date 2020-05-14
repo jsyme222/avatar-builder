@@ -91,7 +91,7 @@ function BaseTab(props) {
 
     useEffect(() => {
         setGender(props.gender)
-    }, [props.gender, ]);
+    });
 
     return (
         <Paper>

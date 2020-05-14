@@ -7,14 +7,15 @@ export default function SetEquipped(items){
     });
 
     useEffect(() => {
-        // console.log(items);
         if(Array.isArray(items)){
             let idArray = [];
             let equipped = [];
             items.length &&
                 items.map((h) => {
-                    equipped.push(h);
-                    idArray.push(h.id);
+                    if(h && h.id){
+                        equipped.push(h);
+                        idArray.push(h.id);
+                    }
                     return true;
                 });
             setEquipped({

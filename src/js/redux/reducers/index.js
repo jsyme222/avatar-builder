@@ -16,17 +16,13 @@ import {
     SET_EYES,
     SET_NOSE,
     SET_MOUTH,
+    SET_FACE,
 } from '../constants/action-types';
 
 
 const LAYERS = {
         base: [],
-        face: {
-            eyebrows: {},
-            eyes: {},
-            nose: {},
-            mouth: {}
-        },
+        face: [],
         hair: [],
         facialHair: [],
         hats: [],
@@ -47,8 +43,8 @@ const STATE = {
     loading: true,
     sidebarOpen: false,
     openPanel: {
-        id: 0,
-        title: 'Overview'
+        id: 3,
+        title: 'Face'
     },
     avatar: AVATAR,
     layers: LAYERS,
@@ -77,6 +73,14 @@ function rootReducer(state=STATE, action) {
             }
         });
     }
+    if(action.type === SET_FACE) {
+        return Object.assign({}, state, {
+            layers: {
+                ...state.layers,
+                face: action.payload
+            }
+        })
+    }
     if(action.type === SET_TOPS) {
         return Object.assign({}, state, {
             layers: {
@@ -94,12 +98,12 @@ function rootReducer(state=STATE, action) {
         });
     }
     if(action.type === SET_EYEBROWS) {
+        console.log(action.payload)
         return Object.assign({}, state, {
             layers: {
                 ...state.layers,
                 face: {
                     ...state.layers.face,
-                    eyebrows: action.payload
                 }
             }
         });

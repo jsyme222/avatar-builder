@@ -19,6 +19,7 @@ const mapStateToProps = state => {
 }
 
 function OverviewTab(props) {
+    // eslint-disable-next-line
     const [equipped, setEquipped] = useState([]);
     const useStyles = makeStyles((theme) => ({
         username: {
@@ -38,9 +39,8 @@ function OverviewTab(props) {
     const classes = useStyles();
 
     useEffect(() => {
-        let layers = Object.entries(props.layers);
         setEquipped(props.layers);
-    })
+    }, [props.layers, ])
 
     return (
         <Paper>

@@ -26,11 +26,12 @@ function ClosetTab(props) {
         }
     }));
     const classes = useStyles();
+    // eslint-disable-next-line
     const [outfits, setOutfits] = useState(null);
 
     useEffect(() => {
         if(!outfits){
-            setOutfits(require('./test-data/closet-data.json'))
+            // setOutfits(require('./test-data/closet-data.json'))
         }
     }, [outfits, ]);
 

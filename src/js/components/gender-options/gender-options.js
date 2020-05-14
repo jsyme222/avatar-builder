@@ -5,9 +5,12 @@ import {
     Select,
     MenuItem,
     Input,
+    InputLabel,
 } from '@material-ui/core';
 import { connect } from 'react-redux';
-import { setGender } from '../../redux/actions';
+import { 
+    setGender,
+ } from '../../redux/actions';
 
 const mapStateToProps = state => {
     return {
@@ -58,10 +61,12 @@ function GenderOptions(props){
     return (
         <div>
             <FormControl className={classes.formControl}>
+                    <InputLabel id="gender-select-label">Gender</InputLabel>
                     <Select
                     labelId="gender-select"
                     id="gender-select"
                     value={gender || "All"}
+                    label={"Gender"}
                     onChange={handleChange}
                     input={<Input />}
                     MenuProps={MenuProps}

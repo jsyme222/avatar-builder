@@ -42,6 +42,8 @@ const Layers = (props) => {
          * decomposed into a seperate img tag.
          */
 
+        let combined = []; // Returned value
+
         function ItemLayer(props) {
             return (
                 <div style={{...props.style, position: 'absolute'}}>
@@ -53,14 +55,7 @@ const Layers = (props) => {
             )
         }
 
-        let fixedTo = (i) => {
-            return {
-                'FRONT': 2 * i,
-                'BACK': -1,
-            }
-        };
-        let combined = [];
-        layers.map(function(l) {
+        function layerLoop(l) {
             if(l && l.id){
                 if(l.has_layers) {
                     // Loop through layers of item, assigning z-index as needed
@@ -90,8 +85,27 @@ const Layers = (props) => {
                 }
             }
             return true
-        })
+        }
+
+        let fixedTo = (i) => {
+            return {
+                'FRONT': 2 * i,
+                'BACK': -1,
+            }
+        };
+        Array.isArray(layers) && layers.map(l => layerLoop(l));
+
         return combined;
+    }
+
+    function combineLayers(layers){
+        let allItemLayers = [];
+        layers && Array.isArray(layers) &&
+            layers.map((layer) => 
+                allItemLayers.push(layer)
+            );
+        let combinedLayers =  (allItemLayers.length >= 1) ? createLayers(allItemLayers) : []
+        return combinedLayers
     }
 
     function buildBase() {
@@ -100,51 +114,56 @@ const Layers = (props) => {
         return baseLayer
     }
 
+    function buildFace() {
+        let face = layers.face;
+        let combinedLayers =  combineLayers(face)
+        return combinedLayers
+    }
+
     function buildTops() {
         let tops = layers.tops;
-        let topsLayers = createLayers(tops)
-        return topsLayers; 
+        let combinedLayers =  combineLayers(tops);
+        return combinedLayers
     }
 
     function buildBottoms() {
         let bottoms = layers.bottoms;
-        let bottomsLayers = createLayers(bottoms)
-        return bottomsLayers; 
+        let combinedLayers = combineLayers(bottoms);
+        return combinedLayers
     }
+
+    function buildHats() {
+        let hats = layers.hats;
+        let hatsLayers = createLayers(hats)
+        return hatsLayers; 
+    }
+    function buildFacialHair(){
+        let hair = layers.hair;
+        let payload = [];
+        if(Array.isArray(hair)){
+            hair.map((h) => {
+                h.subcategory === 'FACIAL-HAIR' &&
+                    payload.push(h)
+                return true;
+            })
+        }
+        let combinedLayers = combineLayers(payload)
+        return combinedLayers
+    }   
 
     function buildHair(){
         let hair = layers.hair;
-        let allHairLayers = [];
-        hair && Object.entries(hair).length > 0 &&
-            Object.entries(hair).map((h) => 
-                allHairLayers.push(h[1])
-            )
-        let combinedLayers = (allHairLayers.length >= 1) ? createLayers(allHairLayers) : []
+        let payload = [];
+        if(Array.isArray(hair)){
+            hair.map((h) => {
+                h.subcategory === 'HEAD-HAIR' &&
+                    payload.push(h)
+                return true;
+            })
+        }
+        let combinedLayers = combineLayers(payload)
         return combinedLayers
     }   
-
-    function buildFacialHair(){
-        let hair = layers.facialHair;
-        let allHairLayers = [];
-        Object.entries(hair).length > 0 &&
-            Object.entries(hair).map((h) => 
-                allHairLayers.push(h[1])
-            )
-        let combinedLayers = (allHairLayers.length >= 1) ? createLayers(allHairLayers) : []
-        return combinedLayers
-    }   
-
-    function buildFace(){
-        let face = layers.face;
-        let allFaceLayers = [];
-        face && Object.entries(face).length > 0 &&
-            Object.entries(face).map((layer) => 
-                allFaceLayers.push(layer[1])
-            );
-        let combinedLayers =  (allFaceLayers.length >= 1) ? createLayers(allFaceLayers) : []
-        return combinedLayers
-    }
-
 
     return [
         ...buildBase(),
@@ -153,6 +172,7 @@ const Layers = (props) => {
         ...buildFacialHair(),
         ...buildBottoms(),
         ...buildFace(),
+        ...buildHats(),
     ]
 };
 

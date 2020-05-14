@@ -7,12 +7,10 @@ import {
   setBase,
   setFace,
   setGender,
-  setEyes,
   setHair,
   setFacialhair,
   setTops,
   setBottoms,
-  setMouth,
   setAccessories,
 } from '../redux/actions/index';
 
@@ -29,12 +27,10 @@ const mapDispatchToProps = dispatch => {
         setLayers: layers => dispatch(setLayers(layers)),
         setBase: base => dispatch(setBase(base)),
         setFace: face => dispatch(setFace(face)),
-        setEyes: eyes => dispatch(setEyes(eyes)),
         setHair: hair => dispatch(setHair(hair)),
         setFacialhair: facialHair => dispatch(setFacialhair(facialHair)),
         setTops: tops => dispatch(setTops(tops)),
         setBottoms: bottoms => dispatch(setBottoms(bottoms)),
-        setMouth: mouth => dispatch(setMouth(mouth)),
         setAcc: acc => dispatch(setAccessories(acc)),
     }
 };
@@ -43,18 +39,17 @@ function SetInitAvatarLayers(props) {
     // eslint-disable-next-line
     const [avatar, setAvatar] = useState(null);
     const options = {
+      face: props.setFace,
       avatar: props.setAvatar,
       gender: props.setGender,
       base: props.setBase,
-      eyes: props.setEyes,
       hair: props.setHair,
       facialHair: props.setFacialhair,
       tops: props.setTops,
       bottoms: props.setBottoms,
-      mouth: props.setMouth,
       acc: props.setAccessories,
     }
-    
+
     useEffect(() => {
           APIHandler([`getAvatar`, 'jdogg'])
           .then((data) => {
@@ -66,14 +61,11 @@ function SetInitAvatarLayers(props) {
                 outfitName: data.outfit_name ? data.outfit_name : "",
               }
             );
-            // options.gender(data.gender.title ? data.gender.title : "");
             options.base(data.base ? data.base : []);
-            options.eyes(data.face.eyes ? data.face.eyes : []);
-            options.hair([data.hair['head-hair'] ? data.hair['head-hair'] : [], ]);
-            options.facialHair([data.hair['facial-hair'] ? data.hair['facial-hair'] : [], ]);
+            options.hair(data.hair ? data.hair : [], );
             options.tops(data.tops ? data.tops : []);
             options.bottoms(data.bottoms ? data.bottoms : []);
-            options.mouth(data.face.mouths ? data.face.mouths : []);
+            options.face(data.face ? data.face : []);
           });
       }, []);
 
