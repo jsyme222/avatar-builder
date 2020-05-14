@@ -55,6 +55,13 @@ const Layers = (props) => {
             )
         }
 
+        const fixedTo = (i) => {
+            return {
+                'FRONT': 2 * i,
+                'BACK': -1,
+            }
+        };
+
         function layerLoop(l) {
             if(l && l.id){
                 if(l.has_layers) {
@@ -87,12 +94,6 @@ const Layers = (props) => {
             return true
         }
 
-        let fixedTo = (i) => {
-            return {
-                'FRONT': 2 * i,
-                'BACK': -1,
-            }
-        };
         Array.isArray(layers) && layers.map(l => layerLoop(l));
 
         return combined;

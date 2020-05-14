@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
     makeStyles,
     FormControl,
@@ -8,26 +8,17 @@ import {
     InputLabel,
 } from '@material-ui/core';
 import { connect } from 'react-redux';
-import { 
-    setGender,
- } from '../../redux/actions';
 
 const mapStateToProps = state => {
     return {
-        gender: state.avatar.gender,
+        // gender: state.avatar.gender,
         genderSelections: state.genderSelections,
         tab: state.openPanel.id
     }
 }
 
-const mapDispatchToProps = dispatch => {
-    return {
-        setGender: gender => dispatch(setGender(gender)),
-    }
-}
-
 function GenderOptions(props){
-    const [gender, setGender] = useState("Male");
+    const [gender, setGender] = useState("All");
     const useStyles = makeStyles((theme) => ({
         formControl: {
           margin: theme.spacing(1),
@@ -54,22 +45,18 @@ function GenderOptions(props){
         props.setGender(newGender);
     }
 
-    useEffect(() => {
-        setGender(props.gender)
-    }, [props.tab, ]);
-
     return (
         <div>
             <FormControl className={classes.formControl}>
                     <InputLabel id="gender-select-label">Gender</InputLabel>
                     <Select
-                    labelId="gender-select"
-                    id="gender-select"
-                    value={gender || "All"}
-                    label={"Gender"}
-                    onChange={handleChange}
-                    input={<Input />}
-                    MenuProps={MenuProps}
+                        labelId="gender-select"
+                        id="gender-select"
+                        value={gender}
+                        label={"Gender"}
+                        onChange={handleChange}
+                        input={<Input />}
+                        MenuProps={MenuProps}
                     >
                         <MenuItem key={"unisex-items"} value={"All"}>
                             All
@@ -85,4 +72,4 @@ function GenderOptions(props){
     )
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(GenderOptions);
+export default connect(mapStateToProps)(GenderOptions);

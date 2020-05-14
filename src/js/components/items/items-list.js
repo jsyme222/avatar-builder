@@ -9,37 +9,36 @@ const mapStateToProps = state => {
 }
 
 function ItemsList(props) {
-    const [gender, setGender] = useState(null);
+    const [gender, setGender] = useState("All");
     const [equipped, setEquipped] = useState([]);
 
     useEffect(() => {
-        if(props.equipped){
-            setEquipped(props.equipped.idArray)
-        }
+        setEquipped(props.equipped.idArray || [])
     }, [props.equipped, ]);
 
     useEffect(() => {
         if(props.selectedGender){
                 setGender(props.selectedGender)
-            }else if(props.gender){
-                setGender(props.gender)
+            }else{
+                setGender('All')
             }
     }, [props.selectedGender, props.gender]);
     
+    
     return (
-        <>
+        <div style={{ display: 'flex' }}>
         {props.items.length >= 1 ?
             props.items.map((option) => 
                 ((!option.gender || gender === 'All') || ((option.gender.title || option.gender) === gender)) ?
                     <div key={option.id}>
-                        <Item item={option} onClickAction={props.onClickAction} equipped={() => equipped.includes(option.id)} />
+                        <Item item={option} onClickAction={props.onClickAction} equipped={() => equipped.includes(option.id)} isEquippedList={props.isEquippedList || false}/>
                     </div>
                     : null
                 )
             :
             <p>No Items Available</p>
             }
-        </>
+        </div>
     )
 }
 

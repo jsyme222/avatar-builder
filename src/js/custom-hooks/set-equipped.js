@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 
 export default function SetEquipped(items){
-    const [equipped, setEquipped] = useState({
+    const [equipped, setEquippedItems] = useState({
         idArray: [],
         items: []
     });
@@ -18,7 +18,7 @@ export default function SetEquipped(items){
                     }
                     return true;
                 });
-            setEquipped({
+            setEquippedItems({
                 idArray: idArray,
                 equipped: equipped
             });

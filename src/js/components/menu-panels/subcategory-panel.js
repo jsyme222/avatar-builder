@@ -13,13 +13,16 @@ const mapStateToProps = state => {
     let title = state.openPanel.title;
     return {
         title: title,
-        gender: state.avatar.gender
     }
 };
 
 function SubcategoryPanel(props){
     // eslint-disable-next-line
-    const [gender, setGender] = useState("Male");
+    const [gender, setGender] = useState("All");
+    const [equipped, setEquipped] = useState({
+        idArray: [],
+        equipped: [],
+    });
     const [objects, setObjects] = useState(null);
     const useStyles = makeStyles((theme) => ({
         header: {
@@ -28,7 +31,8 @@ function SubcategoryPanel(props){
         },
         baseContainer: {
             display: 'flex',
-            margin: 5
+            margin: 5,
+            flexFlow: 'column'
         },
         baseOptionContainer: {
             margin: 10,
@@ -36,7 +40,6 @@ function SubcategoryPanel(props){
             transition: 'all 1 ease',
             '&:hover': {
                 cursor: 'pointer',
-                background: 'grey',
                 '& >img': {
                     padding: 0,
                 }
@@ -46,6 +49,10 @@ function SubcategoryPanel(props){
             border: '2px solid grey',
             padding: 0,
         },
+        equippedList: {
+            width: 'max-content',
+            minHeight: 100,
+        }
     }));
     const classes = useStyles();
 
@@ -54,17 +61,25 @@ function SubcategoryPanel(props){
             APIHandler(props.title.toLowerCase())
             .then((data) => setObjects(data))
         }
-    }, [objects, props.title]);
+    });
 
     useEffect(() => {
-        setGender(props.gender)
-    }, [props.gender, ]);
+        setEquipped(props.equipped)
+    }, [props.equipped, ]);
 
     return (
         <> 
-            <GenderOptions setGender={setGender} />
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-evenly' }}>
+                    <Typography component={"div"}>Equipped</Typography>
+                        <ItemsList 
+                            items={equipped.equipped || []}
+                            equipped={{}}
+                            isEquippedList={true}
+                            />
+                <GenderOptions setGender={setGender} />
+            </div>
             <Paper>
-                <Typography component={"div"}>{props.title}</Typography>
+                {/* <Typography component={"div"}>{props.title}</Typography> */}
                 <div className={classes.header}>
                     <p>Choose your {props.title.toLowerCase()}</p>
                 </div>
@@ -75,11 +90,12 @@ function SubcategoryPanel(props){
                             
                                     <Paper key={index} className={classes.baseContainer}>
                                         {h[0] !== 'generic' && 
-                                            <Typography component={"div"}>{h[0]}</Typography>}
+                                            <Typography component={"div"}>{h[0].split('-')[0]}</Typography>}
                                         <ItemsList 
                                             items={h[1]}
-                                            equipped={props.equipped}
+                                            equipped={equipped}
                                             onClickAction={props.onClickAction}
+                                            selectedGender={gender}
                                             />
                                     </Paper>
                                 :

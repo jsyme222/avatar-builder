@@ -6,12 +6,12 @@ import {
     Grid,
     Button
 } from '@material-ui/core';
-import ItemsList from '../items/items-list';
+import ItemsList from '../../items/items-list';
 import { connect } from 'react-redux';
-import { setBase, setGender, setLayers } from '../../redux/actions/index';
-import { APIHandler } from '../../conf';
-import SetEquipped from '../../custom-hooks/set-equipped';
-import GenderOptions from '../gender-options/gender-options';
+import { setBase, setGender, setLayers } from '../../../redux/actions/index';
+import { APIHandler } from '../../../conf';
+import SetEquipped from '../../../custom-hooks/set-equipped';
+import GenderOptions from '../../gender-options/gender-options';
 
 const mapStateToProps = state => {
     return {
@@ -29,7 +29,7 @@ const mapDispatchToProps = dispatch => {
 
 function BaseTab(props) {
     const [baseOptions, setBaseOptions] = useState(null);
-    const [gender, setGender] = useState("Male");
+    const [gender, setGender] = useState("All");
     const equipped = SetEquipped(props.base);
     const useStyles = makeStyles((theme) => ({
         formControl: {
@@ -88,10 +88,6 @@ function BaseTab(props) {
             .then((bases) => setBaseOptions(bases.results));
         }
     }, [baseOptions, ]);
-
-    useEffect(() => {
-        setGender(props.gender)
-    });
 
     return (
         <Paper>

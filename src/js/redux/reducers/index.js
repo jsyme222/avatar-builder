@@ -7,16 +7,13 @@ import {
     SET_BOTTOMS,
     SET_HAIR,
     SET_HATS,
-    SET_FACIALHAIR,
     SET_LAYERS,
     SET_GENDER,
     SET_GENDER_SELECTIONS,
     SET_ACCESSORIES,
-    SET_EYEBROWS,
-    SET_EYES,
-    SET_NOSE,
-    SET_MOUTH,
     SET_FACE,
+    SET_FEET,
+    SET_EQUIPPED,
 } from '../constants/action-types';
 
 
@@ -39,15 +36,21 @@ const AVATAR = {
     backgroundColor: null,
 };
 
+const EQUIPPED = {
+    idArray: [],
+    equipped: []
+};
+
 const STATE = {
     loading: true,
     sidebarOpen: false,
     openPanel: {
-        id: 3,
-        title: 'Face'
+        id: 4,
+        title: 'Hair'
     },
     avatar: AVATAR,
     layers: LAYERS,
+    equipped: EQUIPPED,
     genderSelections: [],
 };
 
@@ -97,50 +100,6 @@ function rootReducer(state=STATE, action) {
             }
         });
     }
-    if(action.type === SET_EYEBROWS) {
-        console.log(action.payload)
-        return Object.assign({}, state, {
-            layers: {
-                ...state.layers,
-                face: {
-                    ...state.layers.face,
-                }
-            }
-        });
-    }
-    if(action.type === SET_EYES) {
-        return Object.assign({}, state, {
-            layers: {
-                ...state.layers,
-                face: {
-                    ...state.layers.face,
-                    eyes: action.payload
-                }
-            }
-        });
-    }
-    if(action.type === SET_NOSE) {
-        return Object.assign({}, state, {
-            layers: {
-                ...state.layers,
-                face: {
-                    ...state.layers.face,
-                    nose: action.payload
-                }
-            }
-        });
-    }
-    if(action.type === SET_MOUTH) {
-        return Object.assign({}, state, {
-            layers: {
-                ...state.layers,
-                face: {
-                    ...state.layers.face,
-                    mouth: action.payload
-                }
-            }
-        });
-    }
     if(action.type === SET_HAIR) {
         return Object.assign({}, state, {
             layers: {
@@ -154,14 +113,6 @@ function rootReducer(state=STATE, action) {
             layers: {
                 ...state.layers,
                 hats: action.payload
-            }
-        });
-    }
-    if(action.type === SET_FACIALHAIR) {
-        return Object.assign({}, state, {
-            layers: {
-                ...state.layers,
-                facialHair: action.payload
             }
         });
     }
@@ -186,6 +137,14 @@ function rootReducer(state=STATE, action) {
             genderSelections: action.payload
         });
     }
+    if(action.type === SET_FEET) {
+        return Object.assign({}, state, {
+            layers: {
+                ...state.layers,
+                feet: action.payload
+            }
+        });
+    }
     if(action.type === SET_SIDEBAR) {
         return Object.assign({}, state, {
             sidebarOpen: action.payload
@@ -194,6 +153,11 @@ function rootReducer(state=STATE, action) {
     if(action.type === SET_PANEL) {
         return Object.assign({}, state, {
             openPanel: action.payload,
+        });
+    }
+    if(action.type === SET_EQUIPPED) {
+        return Object.assign({}, state, {
+            equipped: action.payload,
         });
     }
     return state;

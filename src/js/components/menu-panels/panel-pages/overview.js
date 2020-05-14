@@ -6,8 +6,7 @@ import {
     Typography
 } from '@material-ui/core';
 import { connect } from 'react-redux';
-import ItemsList from '../items/items-list';
-import SetEquipped from '../../custom-hooks/set-equipped';
+import ItemsList from '../../items/items-list';
 
 const mapStateToProps = state => {
     return {

@@ -9,14 +9,11 @@ import {
     SET_TOPS,
     SET_HATS,
     SET_HAIR,
-    SET_FACIALHAIR,
     SET_ACCESSORIES,
     SET_BOTTOMS,
     SET_FACE,
-    SET_EYEBROWS,
-    SET_EYES,
-    SET_MOUTH,
-    SET_NOSE,
+    SET_FEET,
+    SET_EQUIPPED,
 } from '../constants/action-types';
 
 export function setAvatar(payload) {
@@ -43,32 +40,12 @@ export function setFace(payload) {
     return {type: SET_FACE, payload}
 }
 
-export function setEyebrows(payload) {
-    return {type: SET_EYEBROWS, payload}
-}
-
-export function setEyes(payload) {
-    return {type: SET_EYES, payload}
-}
-
-export function setMouth(payload) {
-    return {type: SET_MOUTH, payload}
-}
-
 export function setHair(payload) {
     return {type: SET_HAIR, payload}
 }
 
 export function setHats(payload) {
     return {type: SET_HATS, payload}
-}
-
-export function setFacialhair(payload) {
-    return {type: SET_FACIALHAIR, payload}
-}
-
-export function setNose(payload) {
-    return {type: SET_NOSE, payload}
 }
 
 export function setAccessories(payload) {
@@ -83,10 +60,18 @@ export function setGenderSelections(payload) {
     return {type: SET_GENDER_SELECTIONS, payload}
 }
 
+export function setFeet(payload) {
+    return {type: SET_FEET, payload}
+}
+
 export function setSidebarOpen(payload) {
     return {type: SET_SIDEBAR, payload}
 }
 
 export function setPanel(payload) {
     return {type: SET_PANEL, payload}
+}
+
+export function setEquipped(payload) {
+    return {type: SET_EQUIPPED, payload}
 }
