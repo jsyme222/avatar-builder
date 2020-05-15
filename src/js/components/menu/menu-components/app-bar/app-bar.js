@@ -5,6 +5,7 @@ import {
     Toolbar,
     IconButton,
     Fab,
+    Typography,
 } from '@material-ui/core';
 import {
     Camera,
@@ -16,6 +17,7 @@ import { connect } from 'react-redux';
 const mapStateToProps = state => {
     return {
         sidebarOpen: state.sidebarOpen,
+        title: state.openPanel.title,
     }
 };
 const mapDispatchToProps = dispatch => {
@@ -59,6 +61,7 @@ function BuilderAppBar(props) {
                     <Fab color={"primary"} aria-label={"avatar snapshot"} className={classes.snapshot}>
                         <Camera />
                     </Fab>
+                    <Typography>{props.title}</Typography>
                 </Toolbar>
             </AppBar>
     )

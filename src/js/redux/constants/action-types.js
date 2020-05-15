@@ -15,3 +15,4 @@ export const SET_FEET = "SET_FEET";
 export const REMOVE = "REMOVE";
 export const ADD = "ADD";
 export const SET_EQUIPPED = "SET_EQUIPPED";
+export const SET_DETAILS = "SET_DETAILS";

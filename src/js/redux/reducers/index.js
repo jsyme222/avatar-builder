@@ -14,6 +14,7 @@ import {
     SET_FACE,
     SET_FEET,
     SET_EQUIPPED,
+    SET_DETAILS,
 } from '../constants/action-types';
 
 
@@ -51,6 +52,7 @@ const STATE = {
     avatar: AVATAR,
     layers: LAYERS,
     equipped: EQUIPPED,
+    itemDetails: {},
     genderSelections: [],
 };
 
@@ -158,6 +160,11 @@ function rootReducer(state=STATE, action) {
     if(action.type === SET_EQUIPPED) {
         return Object.assign({}, state, {
             equipped: action.payload,
+        });
+    }
+    if(action.type === SET_DETAILS) {
+        return Object.assign({}, state, {
+            itemDetails: action.payload,
         });
     }
     return state;

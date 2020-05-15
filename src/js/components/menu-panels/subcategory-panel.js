@@ -8,6 +8,7 @@ import { connect } from 'react-redux';
 import { APIHandler } from '../../conf';
 import ItemsList from '../items/items-list';
 import GenderOptions from '../gender-options/gender-options';
+import ItemDetails from '../items/item-details';
 
 const mapStateToProps = state => {
     let title = state.openPanel.title;
@@ -78,8 +79,8 @@ function SubcategoryPanel(props){
                             />
                 <GenderOptions setGender={setGender} />
             </div>
+            <ItemDetails />
             <Paper>
-                {/* <Typography component={"div"}>{props.title}</Typography> */}
                 <div className={classes.header}>
                     <p>Choose your {props.title.toLowerCase()}</p>
                 </div>

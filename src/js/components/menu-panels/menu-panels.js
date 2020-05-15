@@ -16,10 +16,10 @@ import {
     setHats,
     setBottoms,
     setFeet,
+    setDetails,
 } from '../../redux/actions/index';
 
 const mapStateToProps = state => {
-    // console.log(state.layers.tops)
     return {
         openPanel: state.openPanel.id,
         face: state.layers.face,
@@ -28,6 +28,7 @@ const mapStateToProps = state => {
         hats: state.layers.hats,
         bottoms: state.layers.bottoms,
         feet: state.layers.feet,
+        details: state.itemDetails,
     }
 };
 
@@ -39,6 +40,7 @@ const mapDispatchToProps = dispatch => {
         setHats: hats => dispatch(setHats(hats)),
         setBottoms: bottoms => dispatch(setBottoms(bottoms)),
         setFeet: feet => dispatch(setFeet(feet)),
+        setDetails: details => dispatch(setDetails(details)),
     }
 }
 
@@ -123,6 +125,10 @@ function MenuPanels(props) {
         return data;
     };
 
+    const setItemDetails = (item) => {
+        props.setDetails(item)
+    };
+
     const handleClickArray = (obj) => {
         let field = SUBCATEGORIES[obj.category];
         let props = field[0];
@@ -133,9 +139,11 @@ function MenuPanels(props) {
         }else{
             if(!SINGLE_OBJ_CATS.includes(obj.subcategory || obj.category)){
                 data = [...props, obj];
+                setItemDetails(obj)
             }else{
                 let lose_double = props.filter((item) => (item.subcategory || item.category) !== (obj.subcategory || obj.category));
                 data = [...lose_double, obj];
+                setItemDetails(obj)
             }
         }
         field[2](data);
@@ -148,13 +156,15 @@ function MenuPanels(props) {
         if(equipped.idArray.includes(obj.id)){
             data = []
         }else{
-            data = [obj, ]
+            data = [obj, ];
+            setItemDetails(obj)
         }
         SUBCATEGORIES[field](data)
     };
 
     return (
         <>
+        {/* {console.log(props.details)} */}
             <TabPanel value={props.openPanel} index={0}>
                 {/* Overview Panel */}
                 <OverviewTab />

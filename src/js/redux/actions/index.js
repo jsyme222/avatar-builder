@@ -14,6 +14,7 @@ import {
     SET_FACE,
     SET_FEET,
     SET_EQUIPPED,
+    SET_DETAILS
 } from '../constants/action-types';
 
 export function setAvatar(payload) {
@@ -74,4 +75,8 @@ export function setPanel(payload) {
 
 export function setEquipped(payload) {
     return {type: SET_EQUIPPED, payload}
+}
+
+export function setDetails(payload) {
+    return {type: SET_DETAILS, payload}
 }
