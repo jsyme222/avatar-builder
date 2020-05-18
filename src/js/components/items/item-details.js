@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { makeStyles, Paper, Grid, Divider } from '@material-ui/core';
 import { connect } from 'react-redux';
+import GradientList from './gradients/gradient-list';
+import { fullURL } from '../../conf';
 
 const mapStateToProps = state => {
     return {
@@ -10,8 +12,14 @@ const mapStateToProps = state => {
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        borderLeft: `4px solid ${theme.palette.primary.main}`,
+        margin: 2.5,
+        // boxShadow: `1px 1px 0px 0px #232323,0px 1px 1px 0px #232323,-2px 1px 5px 1px ${theme.palette.primary.main}`,
         fontSize: '0.7rem',
+        
+    },
+    imagePreview: {
+        maxHeight: 30,
+        margin: 5,
     }
 }));
 
@@ -21,7 +29,7 @@ function ItemDetails(props) {
 
     useEffect(() => {
         if(Object.entries(props.details).length >= 1){
-            setDetails(props.details)
+            setDetails(props.details);
         }
     }, [props.details, ])
 
@@ -30,17 +38,18 @@ function ItemDetails(props) {
             <Paper className={classes.root}>
                 {console.log(details)}
                 <Grid container>
-                    <Grid item lg={4}>
+                    <Grid item xs={12} sm={4}>
+                        <GradientList />
+                    </Grid>
+                    <Grid item xs={12} sm={4}>
                         <p><b>{details.title}</b></p>
                         <Divider />
                         <p>{details.description}</p>
                     </Grid>
-                    <Grid item lg={4}>
-                        <p>{details.category} | {(details.gender && details.gender.title) || "Unisex"}</p>
+                    <Grid item xs={12} sm={4}>
+                        <p>{details.category} | {details.subcategory || ""} | {(details.gender && details.gender.title) || "Unisex"}</p>
                         <Divider />
-                    </Grid>
-                    <Grid item lg={4}>
-                        
+                        <img src={fullURL(details.image.thumbnail)} alt={details.image.title} className={classes.imagePreview} />
                     </Grid>
                 </Grid>
             </Paper>

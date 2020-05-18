@@ -19,12 +19,12 @@ const mapDispatchToProps = dispatch => {
 };
 
 const useStyles = makeStyles((theme) => ({
-    baseOptionContainer: {
+    optionContainer: {
         margin: 3.5,
         padding: 2.5,
         minWidth: 30,
         minHeight: 30,
-        transition: 'all 0.25 ease',
+        boxShadow: `inset 1px 2px 1px 1px rgba(23, 23, 23, 0.5),0px 1px 1px 0px rgba(23,23,23,0.5)`,
         '&:hover': {
             cursor: 'pointer',
             background: '#f0efed',
@@ -33,44 +33,32 @@ const useStyles = makeStyles((theme) => ({
             background: 'initial'
         }
     },
-    baseOptionImage: {
+    optionImage: {
         marginTop: '20%',
-        height: 30,
-        maxWidth: 70,
-    },
-    smallOptionImage: {
-        marginTop: '40%',
-        maxHeight: 25,
+        maxHeight: 30,
         width: 'auto',
     },
-    baseOptionContainerEquipped: {
-        padding: 5,
+    optionContainerEquipped: {
+        transition: 'all 1s ease',
+        boxShadow: `2px 2px 10px -5px ${theme.palette.primary.main},0px 1px 1px 0px ${theme.palette.secondary.main},0px 1px 3px 5px ${theme.palette.secondary.main}`,
+    },
+    equippedListItem: {
         minWidth: 30,
         minHeight: 30,
-        marginTop: 0,
-        margin: 10,
-        background: 'rgba(0, 0, 0, 0.15)',
-        boxShadow: `2px 2px 10px -10px ${theme.palette.primary.main},0px 1px 1px 0px ${theme.palette.primary.main},0px 1px 3px 7px ${theme.palette.secondary.main}`,
-        '&:hover': {
-            cursor: 'pointer',
-        },
-    },
-    equipped: {
-        minWidth: 35,
-        minHeight: 35,
         padding: 1.2,
         margin: 2,
-        background: 'rgba(0, 0, 0, 0.15)',
-        boxShadow: `2px 2px 1px -1px ${theme.palette.secondary.main},0px 1px 1px 0px ${theme.palette.secondary.main},0px 1px 3px 2px ${theme.palette.secondary.main}`,
         '& >img': {
             marginTop: '20%',
             padding: 1.2,
             width: 'auto',
+        },
+        '&:hover': {
+            background: 'rgba(0, 0, 0, 0.15)',
         }
     },
     beingViewed: {
         '& >div': {
-            borderLeft: `2px solid ${theme.palette.primary.main}`,
+            boxShadow: `2px 2px 1px -15px ${theme.palette.secondary.main},0px 1px 1px 0px ${theme.palette.secondary.main},0px 1px 3px 5px ${theme.palette.primary.main}`,
         }
     }
 }))
@@ -82,30 +70,17 @@ function Item(props) {
     const [isEquippedList, setIsEquippedList] = useState(false);
     const [equipped, setEquipped] = useState(false);
     const [image, setImage] = useState("");
-    const [smallImage, setSmallImage] = useState("");
     const classes = useStyles();
-
-    const isSmallImage = (src) => {
-        let i = new Image();
-        i.src = src;     
-        let w = i.width;
-        let h = i.height;
-        let small = Math.max(w, h) < 50;
-        return small;
-    };
 
     const ListItem = () => {
         return (
             <Paper
-                className={`${equipped ? classes.baseOptionContainerEquipped : classes.baseOptionContainer} ${props.isEquippedList ? classes.equipped : null}`} 
+                className={`${classes.optionContainer}  ${equipped && classes.optionContainerEquipped} ${props.isEquippedList && classes.equippedListItem }`} 
                 onClick={(event) => props.onClickAction(props.item)}
                 key={props.item.id}
             >
-            {!itemLoading ?
-                !smallImage ?
-                        <img src={fullURL(image)} alt={props.item.alt} className={classes.baseOptionImage}/>
-                        :
-                        <img src={fullURL(image)} alt={props.item.alt} className={classes.smallOptionImage}/>
+            {(!itemLoading && image) ?
+                <img src={fullURL(image)} alt={props.item.alt} className={classes.optionImage}/>
                 :
                 <Skeleton variant={"circle"} width={30} height={30} style={{ margin: 'auto' }}/>
             }
@@ -116,15 +91,13 @@ function Item(props) {
     const EquippedItem = () => {
         return (
             <Paper
-                className={`${equipped ? classes.baseOptionContainerEquipped : classes.baseOptionContainer} ${classes.equipped}`} 
+                className={classes.optionContainer} 
                 onClick={(event) => props.setDetails(props.item)}
                 key={props.item.id}
             >
-            {!itemLoading ?
-                !smallImage ?
-                        <img src={fullURL(image)} alt={props.item.alt} className={classes.baseOptionImage}/>
-                        :
-                        <img src={fullURL(image)} alt={props.item.alt} className={classes.smallOptionImage}/>
+                {console.log(props.item)}
+            {(!itemLoading && image) ?
+                <img src={fullURL(image)} alt={props.item.alt} className={classes.optionImage}/>
                 :
                 <Skeleton variant={"circle"} width={30} height={30} style={{ margin: 'auto' }}/>
             }
@@ -135,13 +108,15 @@ function Item(props) {
     useEffect(() => {
         if(props.equipped){
             setEquipped(props.equipped)
+            setTimeout(() => {
+                setItemLoading(false);
+            }, 200)
         }
     }, [props.equipped, ]);
 
     useEffect(() => {
         let i = props.item.image.thumbnail || props.item.image.image;
         setImage(i);
-        setSmallImage(isSmallImage(i));
     }, [props.item,]);
 
     useEffect(() => {

@@ -62,7 +62,7 @@ function SubcategoryPanel(props){
             APIHandler(props.title.toLowerCase())
             .then((data) => setObjects(data))
         }
-    });
+    }, [objects, props.title]);
 
     useEffect(() => {
         setEquipped(props.equipped)

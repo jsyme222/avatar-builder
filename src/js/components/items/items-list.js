@@ -26,7 +26,7 @@ function ItemsList(props) {
     
     
     return (
-        <div style={{ display: 'flex' }}>
+        <div style={{ display: 'flex', margin: 10 }}>
         {props.items.length >= 1 ?
             props.items.map((option) => 
                 ((!option.gender || gender === 'All') || ((option.gender.title || option.gender) === gender)) ?
