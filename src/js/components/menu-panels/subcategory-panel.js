@@ -69,7 +69,7 @@ function SubcategoryPanel(props){
     }, [props.equipped, ]);
 
     return (
-        <> 
+        <div className={classes.root}> 
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-evenly' }}>
                     <Typography component={"div"}>Equipped</Typography>
                         <ItemsList 
@@ -89,7 +89,7 @@ function SubcategoryPanel(props){
                             Object.entries(objects).map((h, index) => // Loop through all subcategories
                                 Array.isArray(h[1]) && (h[1].length >= 1) ?
                             
-                                    <Paper key={index} className={classes.baseContainer}>
+                                    <div key={index} className={classes.baseContainer}>
                                         {h[0] !== 'generic' &&  // Display SubCategory name if supplied
                                             <Typography component={"div"}>{h[0].split('-')[0]}</Typography>}
                                         <ItemsList 
@@ -98,7 +98,7 @@ function SubcategoryPanel(props){
                                             onClickAction={props.onClickAction}
                                             selectedGender={gender}
                                             />
-                                    </Paper>
+                                    </div>
                                 :
                                 null
                             )
@@ -106,7 +106,7 @@ function SubcategoryPanel(props){
                             `No ${props.title.toLowerCase()} right now`
                     }
             </Paper>
-        </>
+        </div>
         )
 }
 

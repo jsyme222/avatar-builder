@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Paper } from '@material-ui/core';
+import { Paper, Grow, IconButton } from '@material-ui/core';
+import {Edit} from '@material-ui/icons';
 import { Skeleton } from '@material-ui/lab';
 import { makeStyles } from '@material-ui/core/styles';
 import { fullURL } from '../../conf';
@@ -24,6 +25,7 @@ const useStyles = makeStyles((theme) => ({
         padding: 2.5,
         minWidth: 30,
         minHeight: 30,
+        transition: 'all 0.25s ease',
         boxShadow: `inset 1px 2px 1px 1px rgba(23, 23, 23, 0.5),0px 1px 1px 0px rgba(23,23,23,0.5)`,
         '&:hover': {
             cursor: 'pointer',
@@ -39,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
         width: 'auto',
     },
     optionContainerEquipped: {
-        transition: 'all 1s ease',
+        transition: 'all 0.25s ease',
         boxShadow: `2px 2px 10px -5px ${theme.palette.primary.main},0px 1px 1px 0px ${theme.palette.secondary.main},0px 1px 3px 5px ${theme.palette.secondary.main}`,
     },
     equippedListItem: {
@@ -47,6 +49,7 @@ const useStyles = makeStyles((theme) => ({
         minHeight: 30,
         padding: 1.2,
         margin: 2,
+        transition: 'all 0.25s ease',
         '& >img': {
             marginTop: '20%',
             padding: 1.2,
@@ -59,13 +62,14 @@ const useStyles = makeStyles((theme) => ({
     beingViewed: {
         '& >div': {
             boxShadow: `2px 2px 1px -15px ${theme.palette.secondary.main},0px 1px 1px 0px ${theme.palette.secondary.main},0px 1px 3px 5px ${theme.palette.primary.main}`,
-        }
+        },
     }
 }))
 
 function Item(props) {
     // eslint-disable-next-line
-    const [itemLoading, setItemLoading] = useState(false);
+    const [itemLoading, setItemLoading] = useState(true);
+    const [item, setItem] = useState(null);
     const [isBeingViewed, setIsBeingViewed] = useState(false);
     const [isEquippedList, setIsEquippedList] = useState(false);
     const [equipped, setEquipped] = useState(false);
@@ -96,13 +100,19 @@ function Item(props) {
                 key={props.item.id}
             >
             {(!itemLoading && image) ?
-                <img src={fullURL(image)} alt={props.item.alt} className={classes.optionImage}/>
+                <div>
+                    <img src={fullURL(image)} alt={props.item.alt} className={classes.optionImage}/>
+                </div>
                 :
                 <Skeleton variant={"circle"} width={30} height={30} style={{ margin: 'auto' }}/>
             }
             </Paper>
         )
     };
+
+    useEffect(() => {
+        setItem(props.item)
+    }, [props.item, ]);
 
     useEffect(() => {
         if(props.equipped){
@@ -116,7 +126,8 @@ function Item(props) {
     useEffect(() => {
         let i = props.item.image.thumbnail || props.item.image.image;
         setImage(i);
-    }, [props.item,]);
+        setItemLoading(false)
+    }, [props.item, ]);
 
     useEffect(() => {
         if(props.isEquippedList){
@@ -125,21 +136,25 @@ function Item(props) {
     }, [props.isEquippedList, ]);
 
     useEffect(() => {
-        if(props.details.id) {
-            if(props.item.id === props.details.id){
+        if(props.details.id && item) {
+            if(item.id === props.details.id){
                 setIsBeingViewed(true);
             }else{
                 setIsBeingViewed(false);
             }
         }
-    }, [props.details.id, props.item.id, ])
+    }, [props.details, item ])
 
     return (
         <div className={isBeingViewed ? classes.beingViewed : null}>
-            {!isEquippedList ?
-                <ListItem />
-                :
-                <EquippedItem />}
+            <Grow in={!itemLoading} >
+                {
+                    !isEquippedList ?
+                        <ListItem />
+                        :
+                        <EquippedItem />
+                }
+            </Grow>
         </div>
     )
 }

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Container, makeStyles, Divider } from '@material-ui/core';
+import { Container, makeStyles } from '@material-ui/core';
 import { connect } from 'react-redux';
 
 const mapStateToProps = state => {
@@ -9,6 +9,7 @@ const mapStateToProps = state => {
 };
 
 function GradientList(props) {
+    const [item, setItem] = useState(null);
     const [gradients, setGradients] = useState(null);
     const [activeGradient, setActiveGradient] = useState(null);
     const useStyles = makeStyles((theme) => ({
@@ -34,14 +35,18 @@ function GradientList(props) {
     const classes = useStyles();
 
     useEffect(() => {
+        if(props.item) {
+            setItem(props.item);
+        }
+    }, [props.item, ]);
+
+    useEffect(() => {
         setGradients(props.details.gradients)
     }, [props.details, ]);
 
     return (
         <Container className={classes.root}>
-            <p>Gradients</p>
-            <Divider />
-            <div className={classes.listContainer}>
+            <p>Gradient</p>
                 {Array.isArray(gradients) ?
                     gradients.map((g) => 
                         <div 
@@ -53,7 +58,6 @@ function GradientList(props) {
                     :
                     null
                 }
-            </div>
         </Container>
     )
 }
