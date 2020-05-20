@@ -1,4 +1,4 @@
-export const URL = "http://192.168.68.114:8000";
+export const URL = "http://192.168.0.34:8000";
 
 export function fullURL(url) {
     let fullURL = url;

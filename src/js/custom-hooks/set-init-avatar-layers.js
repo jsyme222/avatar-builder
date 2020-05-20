@@ -54,7 +54,7 @@ function SetInitAvatarLayers(props) {
             options.avatar(
               {
                 username: data.title ? data.title : "",
-                gender: data.gender.title ? data.gender.title : "",
+                gender: data.gender && data.gender.title ? data.gender.title : "",
                 outfitName: data.outfit_name ? data.outfit_name : "",
               }
             );

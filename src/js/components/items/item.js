@@ -95,7 +95,6 @@ function Item(props) {
                 onClick={(event) => props.setDetails(props.item)}
                 key={props.item.id}
             >
-                {console.log(props.item)}
             {(!itemLoading && image) ?
                 <img src={fullURL(image)} alt={props.item.alt} className={classes.optionImage}/>
                 :

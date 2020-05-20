@@ -11,7 +11,6 @@ import { connect } from 'react-redux';
 
 const mapStateToProps = state => {
     return {
-        // gender: state.avatar.gender,
         genderSelections: state.genderSelections,
         tab: state.openPanel.id
     }
@@ -61,10 +60,11 @@ function GenderOptions(props){
                         <MenuItem key={"unisex-items"} value={"All"}>
                             All
                         </MenuItem>
-                    {(props.genderSelections.length >= 1) && props.genderSelections.map((gender) => (
-                        <MenuItem key={gender.id + gender.title} value={gender.title}>
-                            {gender.title}
-                        </MenuItem>
+                    {(props.genderSelections.length >= 1) && 
+                        props.genderSelections.map((gender) => (
+                            <MenuItem key={gender.id + gender.title} value={gender.title}>
+                                {gender.title}
+                            </MenuItem>
                     ))}
                     </Select>
             </FormControl>

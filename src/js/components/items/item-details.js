@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { makeStyles, Paper, Grid, Divider } from '@material-ui/core';
 import { connect } from 'react-redux';
-import GradientList from './gradients/gradient-list';
+import GradientList from '../gradients/gradient-list';
+import LayerList from '../layers/layer-list';
 import { fullURL } from '../../conf';
 
 const mapStateToProps = state => {
@@ -36,10 +37,13 @@ function ItemDetails(props) {
     return (
         details &&
             <Paper className={classes.root}>
-                {console.log(details)}
                 <Grid container>
                     <Grid item xs={12} sm={4}>
-                        <GradientList />
+                        {!details.has_layers ?
+                            <GradientList />
+                            :
+                            <LayerList />
+                        }
                     </Grid>
                     <Grid item xs={12} sm={4}>
                         <p><b>{details.title}</b></p>
