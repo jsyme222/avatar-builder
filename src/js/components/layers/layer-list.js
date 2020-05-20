@@ -15,9 +15,9 @@ const useStyles = makeStyles((theme) => ({
         minHeight: 50,
     },
     layerBox: {
-        position: 'relative',
         alignSelf: 'center',
         margin: 2.5,
+        maxWidth:75,
     },
     layerImage: {
         maxHeight: 55,
@@ -36,7 +36,13 @@ function LayerList(props) {
     const [activeLayer, setActiveLayer] = useState(null);
     const [showEditButton, setShowEditButton] = useState(false);
     const [showGradientList, setShowGradientList] = useState(false);
+    const [theseOptions, setTheseOptions] = useState(null);
     const classes = useStyles();
+
+    const viewGradientOptions = (layer) => {
+        setTheseOptions(layer.id);
+        setShowGradientList(!showGradientList)
+    };
 
     useEffect(() => {
         let image = props.details.image;
@@ -64,7 +70,7 @@ function LayerList(props) {
                 {!showGradientList ?
                     Array.isArray(layers) ?
                     layers.map((layer) => 
-                        layer && 
+                        layer && layer.has_gradients &&
                             <div 
                                 className={`${classes.layerBox} ${(layer === activeLayer) && classes.activeLayer}`}
                                 onClick={(event) => setActiveLayer(layer)}
@@ -72,7 +78,7 @@ function LayerList(props) {
                                 key={layer.id}
                             >
                                 <img src={layer.thumbnail} alt={layer.alt} className={classes.layerImage} />
-                                <IconButton className={classes.editButton} color={"primary"} onClick={(event) => setShowGradientList(!showGradientList)}>
+                                <IconButton className={classes.editButton} color={"primary"} onClick={(event) => viewGradientOptions(layer)}>
                                     <Palette />
                                 </IconButton>
                             </div>
@@ -80,7 +86,7 @@ function LayerList(props) {
                     :
                     null
                     :
-                    <GradientList />
+                    <GradientList item={theseOptions} />
                 }
             </div>
         </Container>

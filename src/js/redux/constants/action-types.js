@@ -16,3 +16,4 @@ export const REMOVE = "REMOVE";
 export const ADD = "ADD";
 export const SET_EQUIPPED = "SET_EQUIPPED";
 export const SET_DETAILS = "SET_DETAILS";
+export const SET_ALL_LAYERS = "SET_ALL_LAYERS";

@@ -9,6 +9,7 @@ export function fullURL(url) {
 }
 
 const PATHS = {
+    'options': '/api/item/view/options/',
     'getAvatar': '/api/avatar/view/',
     'baseImages': '/api/avatar/base-images',
     'genders': '/api/avatar/genders',

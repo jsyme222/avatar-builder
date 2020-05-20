@@ -23,6 +23,7 @@ const mapDispatchToProps = dispatch => {
 const useStyles = makeStyles((theme) => ({
     root: {
         margin: 2.5,
+        marginTop: 5,
         // boxShadow: `1px 1px 0px 0px #232323,0px 1px 1px 0px #232323,-2px 1px 5px 1px ${theme.palette.primary.main}`,
         fontSize: '0.7rem',
         
@@ -33,6 +34,8 @@ const useStyles = makeStyles((theme) => ({
     },
     closeButton: {
         position: 'absolute',
+        left: 0,
+        top: -25,
         padding: 1,
     }
 }));
@@ -49,7 +52,7 @@ function ItemDetails(props) {
 
     useEffect(() => {
         if(Object.entries(props.details).length >= 1){
-            console.log(props.details)
+            // console.log(props.details)
             if(matchedDetailTOTitle){
                 setDetails(props.details);
             }else{
@@ -60,7 +63,7 @@ function ItemDetails(props) {
 
     return (
         details &&
-            <Grow in={details} onClose={(event) => setDetails(null)}>
+            <Grow in={matchedDetailTOTitle} onClose={(event) => setDetails(null)}>
                 <Paper className={classes.root}>
                     <Grid container style={{position: 'relative'}}>
                         <Grid item xs={12} sm={4}>
