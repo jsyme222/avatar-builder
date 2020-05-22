@@ -1,13 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { Container, makeStyles } from '@material-ui/core';
 import { APIHandler } from '../../conf';
+import { setAllLayers } from '../../redux/actions/index';
 import { connect } from 'react-redux';
+import { fullURL } from '../../conf';
 
 const mapStateToProps = state => {
     return {
-        layers: state.layers
+        layers: state.layers,
+        details: state.itemDetails
     }
 };
+
+const mapDsipatchToProps = dispatch => {
+    return {
+        setAllLayers: layers => dispatch(setAllLayers(layers)),
+    }
+}
 
 function GradientList(props) {
     const [gradients, setGradients] = useState(null);
@@ -16,6 +25,7 @@ function GradientList(props) {
     const useStyles = makeStyles((theme) => ({
         root: {
             minHeight: 50,
+            display: 'flex',
         },
         gradientBox: {
             height: 25,
@@ -38,31 +48,30 @@ function GradientList(props) {
 
     const setNewLayer = (layer) => {
         let layers = props.layers;
-        // Object.entries(layers).map((layer) => {
-        //     layer.map((l) => {
-        //         if(Array.isArray(l)){
-        //             l.map(((innerLayer) => {
-        //                 Object.entries(innerLayer.image).map((imageField) => {
-        //                     if(typeof(imageField) === 'object'){
-        //                         Object.entries(imageField).map((imageLayer) => {
-        //                             if(imageLayer[1]){
-        //                                 let id = imageLayer[1]
-        //                                 if(activeGradient){
-        //                                     console.log(activeGradient)
-        //                                 }
-        //                             }
-        //                         })
-        //                     }
-        //                 })
-        //             }))
-        //         }
-        //     })
-        // })
+        let variant = layer.variant_of;
+        let cat = props.details.category;
+        layers[cat.toLowerCase()].map((field) => {
+            for(let i = 1; i <= 5; i++){
+                let layerImage = field.image[`layer${i}`];
+                if(layerImage && ((layerImage.id === variant) || (layerImage.variant_of === variant))){
+                    let l = layers;
+                    if(!field.image[`layer${i + 1}`]){
+                        field.image.image = layer.image
+                    }
+                    let image = layer.image;
+                    layer.image = fullURL(image);
+                    l[cat.toLowerCase()][0].image[`layer${i}`] = layer;
+                    props.setAllLayers(l);
+                }
+            }
+            return true
+        })
     };
 
     const onClickAction = (layerOption) => {
         if(activeGradient && (layerOption.id === activeGradient.id)){
-            setActiveGradient(null)
+            setActiveGradient(null);
+            setNewLayer(layerOption)
         }else{
             setActiveGradient(layerOption);
             setNewLayer(layerOption)
@@ -77,8 +86,10 @@ function GradientList(props) {
 
     useEffect(() => {
         if(item){
-            APIHandler(['options', item])
-            .then(gradients => setGradients(gradients))
+            APIHandler(['options', item.id])
+            .then(gradients => {
+                let d = gradients;
+                setGradients(d)});
         }
     }, [item, ]);
 
@@ -92,7 +103,6 @@ function GradientList(props) {
                             className={`${classes.gradientBox} ${(option === activeGradient) && classes.activeGradient}`}
                             onClick={(event) => onClickAction(option)}
                         >
-                            {console.log(props.layers)}
                         </div>
                     )    
                     :
@@ -102,4 +112,4 @@ function GradientList(props) {
     )
 }
 
-export default connect(mapStateToProps)(GradientList);
+export default connect(mapStateToProps, mapDsipatchToProps)(GradientList);

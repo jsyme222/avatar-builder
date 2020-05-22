@@ -47,6 +47,9 @@ function SetInitAvatarLayers(props) {
       acc: props.setAccessories,
     }
 
+    const breakdownData = (data) => {
+      
+    }
     useEffect(() => {
           APIHandler([`getAvatar`, 'jdogg'])
           .then((data) => {

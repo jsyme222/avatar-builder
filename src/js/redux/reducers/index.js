@@ -60,7 +60,10 @@ const STATE = {
 function rootReducer(state=STATE, action) {
     if(action.type === SET_ALL_LAYERS) {
         return Object.assign({}, state, {
-            layers: action.payload
+            layers: {
+                ...state.layers,
+                ...action.payload
+            }
         })
     }
     if(action.type === SET_AVATAR) {

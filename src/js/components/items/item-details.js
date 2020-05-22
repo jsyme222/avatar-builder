@@ -68,7 +68,7 @@ function ItemDetails(props) {
                     <Grid container style={{position: 'relative'}}>
                         <Grid item xs={12} sm={4}>
                             {!details.has_layers ?
-                                <GradientList />
+                                <GradientList item={details}/>
                                 :
                                 <LayerList />
                             }
@@ -79,7 +79,7 @@ function ItemDetails(props) {
                             <p>{details.description}</p>
                         </Grid>
                         <Grid item xs={12} sm={4}>
-                            <p>{details.category} | {details.subcategory || ""} | {(details.gender && details.gender.title) || "Unisex"}</p>
+                            <p>{details.category} | {details.subcategory || ""} | {(details.gender && (details.gender.title || details.gender)) || "Unisex"}</p>
                             <Divider />
                             <img src={fullURL(details.image.thumbnail)} alt={details.image.title} className={classes.imagePreview} />
                         </Grid>

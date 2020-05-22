@@ -34,13 +34,12 @@ const useStyles = makeStyles((theme) => ({
 function LayerList(props) {
     const [layers, setLayers] = useState(null);
     const [activeLayer, setActiveLayer] = useState(null);
-    const [showEditButton, setShowEditButton] = useState(false);
     const [showGradientList, setShowGradientList] = useState(false);
     const [theseOptions, setTheseOptions] = useState(null);
     const classes = useStyles();
 
     const viewGradientOptions = (layer) => {
-        setTheseOptions(layer.id);
+        setTheseOptions(layer);
         setShowGradientList(!showGradientList)
     };
 
@@ -74,7 +73,6 @@ function LayerList(props) {
                             <div 
                                 className={`${classes.layerBox} ${(layer === activeLayer) && classes.activeLayer}`}
                                 onClick={(event) => setActiveLayer(layer)}
-                                onMouseOver={(event) => setShowEditButton(!showEditButton)}
                                 key={layer.id}
                             >
                                 <img src={layer.thumbnail} alt={layer.alt} className={classes.layerImage} />

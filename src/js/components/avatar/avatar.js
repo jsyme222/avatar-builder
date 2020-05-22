@@ -58,7 +58,7 @@ const Layers = (props) => {
         const fixedTo = (i) => {
             return {
                 'FRONT': 2 * i,
-                'BACK': -1,
+                'BACK': 0,
             }
         };
 

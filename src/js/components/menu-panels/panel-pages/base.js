@@ -8,10 +8,11 @@ import {
 } from '@material-ui/core';
 import ItemsList from '../../items/items-list';
 import { connect } from 'react-redux';
-import { setBase, setGender, setLayers } from '../../../redux/actions/index';
+import { setBase, setGender, setDetails } from '../../../redux/actions/index';
 import { APIHandler } from '../../../conf';
 import SetEquipped from '../../../custom-hooks/set-equipped';
 import GenderOptions from '../../gender-options/gender-options';
+import ItemDetails from '../../items/item-details';
 
 const mapStateToProps = state => {
     return {
@@ -23,7 +24,7 @@ const mapDispatchToProps = dispatch => {
     return {
         setBase: base => dispatch(setBase(base)),
         setGender: gender => dispatch(setGender(gender)),
-        setLayers: layers => dispatch(setLayers(layers)),
+        setDetails: details => dispatch(setDetails(details)),
     }
 };
 
@@ -76,6 +77,7 @@ function BaseTab(props) {
     const handleClick = (base) => {
         props.setBase([base, ]); // base must be set inside an array
         props.setGender(base.gender);  // gender is serialized as gender: { "title": "Male" }
+        props.setDetails(base)
     };
 
     const handleStrip = (event) => {
@@ -92,6 +94,7 @@ function BaseTab(props) {
     return (
         <Paper>
             <Typography component={"div"}>Base</Typography>
+            <ItemDetails />
             <div className={classes.header}>
                 <p>Choose your Base</p>
             </div>
