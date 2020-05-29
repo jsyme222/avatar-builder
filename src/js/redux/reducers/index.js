@@ -16,6 +16,7 @@ import {
     SET_EQUIPPED,
     SET_DETAILS,
     SET_ALL_LAYERS,
+    SET_INITIAL_LAYER,
 } from '../constants/action-types';
 
 
@@ -54,6 +55,7 @@ const STATE = {
     layers: LAYERS,
     equipped: EQUIPPED,
     itemDetails: {},
+    initialLayer: {},
     genderSelections: [],
 };
 
@@ -174,6 +176,11 @@ function rootReducer(state=STATE, action) {
     if(action.type === SET_DETAILS) {
         return Object.assign({}, state, {
             itemDetails: action.payload,
+        });
+    }
+    if(action.type === SET_INITIAL_LAYER) {
+        return Object.assign({}, state, {
+            initialLayer: action.payload,
         });
     }
     return state;

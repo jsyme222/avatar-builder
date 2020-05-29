@@ -3,10 +3,30 @@ import { Container, makeStyles, Divider, IconButton } from '@material-ui/core';
 import { Palette, ArrowBack } from '@material-ui/icons';
 import { connect } from 'react-redux';
 import GradientList from '../gradients/gradient-list';
+import { setInitialLayer } from '../../redux/actions/index';
+import { fullURL } from '../../conf';
+
+/*
+"layer-list"
+
+Lists all layers for the current item if the layer has variant layers 
+(there are alternate forms of the layer) otherwise the list will appear blank.
+This component will render the "gradient-list" component once a layer is selected.
+
+If an item is selected that has only (1) one single layer, this component will be
+skipped and the item will be sent directly to the "gradient-list" component to display
+options if it has variant layers.
+*/
 
 const mapStateToProps = state => {
     return {
         details: state.itemDetails
+    }
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        setInitialLayer: layer => dispatch(setInitialLayer(layer)),
     }
 };
     
@@ -32,22 +52,23 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function LayerList(props) {
-    const [layers, setLayers] = useState(null);
-    const [activeLayer, setActiveLayer] = useState(null);
-    const [showGradientList, setShowGradientList] = useState(false);
-    const [theseOptions, setTheseOptions] = useState(null);
+    const [layers, setLayers] = useState(null);  // All layers with variant layers
+    const [activeLayer, setActiveLayer] = useState(null);  // Defines active layer - to be styled
+    const [showGradientList, setShowGradientList] = useState(false);  // When true will show "gradient-list" for activeLayer
+    const [theseOptions, setTheseOptions] = useState(null);  // Send the gradient options from the activeLayer to the "gradient-list"
     const classes = useStyles();
 
-    const viewGradientOptions = (layer) => {
+    const viewGradientOptions = (layer) => {  // Prepares "gradient-list" for gradient options
+        props.setInitialLayer(layer);
         setTheseOptions(layer);
         setShowGradientList(!showGradientList)
     };
 
-    useEffect(() => {
+    useEffect(() => {  // Takes item image and layers and sets state accordingly
         let image = props.details.image;
         let layers = [];
         Object.entries(image).map((item) => {
-            if(item != null && typeof(item[1]) === 'object'){
+            if(item && typeof(item[1]) === 'object'){
                 layers.push(item[1])
             }
             return true;
@@ -75,7 +96,7 @@ function LayerList(props) {
                                 onClick={(event) => setActiveLayer(layer)}
                                 key={layer.id}
                             >
-                                <img src={layer.thumbnail} alt={layer.alt} className={classes.layerImage} />
+                                <img src={fullURL(layer.thumbnail)} alt={layer.alt} className={classes.layerImage} />
                                 <IconButton className={classes.editButton} color={"primary"} onClick={(event) => viewGradientOptions(layer)}>
                                     <Palette />
                                 </IconButton>
@@ -91,4 +112,4 @@ function LayerList(props) {
     )
 }
 
-export default connect(mapStateToProps)(LayerList);
+export default connect(mapStateToProps, mapDispatchToProps)(LayerList);

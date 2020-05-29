@@ -69,6 +69,7 @@ function Item(props) {
     // eslint-disable-next-line
     const [itemLoading, setItemLoading] = useState(true);
     const [item, setItem] = useState(null);
+    // eslint-disable-next-line
     const [isBeingViewed, setIsBeingViewed] = useState(false);
     const [isEquippedList, setIsEquippedList] = useState(false);
     const [equipped, setEquipped] = useState(false);
@@ -145,7 +146,8 @@ function Item(props) {
     }, [props.details, item ])
 
     return (
-        <div className={isBeingViewed ? classes.beingViewed : null}>
+        // <div className={isBeingViewed ? classes.beingViewed : null}>
+        <div>
             <Grow in={!itemLoading} >
                 {
                     !isEquippedList ?

@@ -8,7 +8,7 @@ import {
 } from '@material-ui/core';
 import ItemsList from '../../items/items-list';
 import { connect } from 'react-redux';
-import { setBase, setGender, setDetails } from '../../../redux/actions/index';
+import { setBase, setGender, setDetails, setLayers } from '../../../redux/actions/index';
 import { APIHandler } from '../../../conf';
 import SetEquipped from '../../../custom-hooks/set-equipped';
 import GenderOptions from '../../gender-options/gender-options';
@@ -18,6 +18,7 @@ const mapStateToProps = state => {
     return {
         base: state.layers.base,
         gender: state.avatar.gender,
+        details: state.itemDetails,
     }
 };
 const mapDispatchToProps = dispatch => {
@@ -25,6 +26,7 @@ const mapDispatchToProps = dispatch => {
         setBase: base => dispatch(setBase(base)),
         setGender: gender => dispatch(setGender(gender)),
         setDetails: details => dispatch(setDetails(details)),
+        setLayers: layers => dispatch(setLayers(layers)),
     }
 };
 
@@ -75,9 +77,9 @@ function BaseTab(props) {
     const classes = useStyles();
 
     const handleClick = (base) => {
-        props.setBase([base, ]); // base must be set inside an array
-        props.setGender(base.gender);  // gender is serialized as gender: { "title": "Male" }
         props.setDetails(base)
+        props.setBase([base, ]); // base must be set inside an array
+        props.setGender(base.gender);
     };
 
     const handleStrip = (event) => {
@@ -93,6 +95,7 @@ function BaseTab(props) {
 
     return (
         <Paper>
+            {console.log(props.details)}
             <Typography component={"div"}>Base</Typography>
             <ItemDetails />
             <div className={classes.header}>

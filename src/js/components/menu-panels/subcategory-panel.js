@@ -79,7 +79,7 @@ function SubcategoryPanel(props){
                             />
                 <GenderOptions setGender={setGender} />
             </div>
-            <ItemDetails />
+            <ItemDetails equipped={equipped || {}}/>
             <Paper>
                 <div className={classes.header}>
                     <p>Choose your {props.title.toLowerCase()}</p>
@@ -91,7 +91,7 @@ function SubcategoryPanel(props){
                             
                                     <div key={index} className={classes.baseContainer}>
                                         {h[0] !== 'generic' &&  // Display SubCategory name if supplied
-                                            <Typography component={"div"}>{h[0].split('-')[0]}</Typography>}
+                                            <Typography component={"div"}>{h[0]}</Typography>}
                                         <ItemsList 
                                             items={h[1]}
                                             equipped={equipped}

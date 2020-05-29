@@ -1,3 +1,7 @@
+/*
+The useEffect call to set all equipped layers has been disabled from eslint
+since I haven't quite decided on the best way to go about this function.
+*/
 import { useState, useEffect }from 'react';
 import { APIHandler } from '../conf';
 import { connect } from 'react-redux'; 
@@ -36,7 +40,7 @@ const mapDispatchToProps = dispatch => {
 function SetInitAvatarLayers(props) {
     // eslint-disable-next-line
     const [avatar, setAvatar] = useState(null);
-    const options = {
+    const options = { 
       face: props.setFace,
       avatar: props.setAvatar,
       gender: props.setGender,
@@ -46,11 +50,8 @@ function SetInitAvatarLayers(props) {
       bottoms: props.setBottoms,
       acc: props.setAccessories,
     }
-
-    const breakdownData = (data) => {
-      
-    }
     useEffect(() => {
+      // Possibly break this function out into something that will work without needing dependencies
           APIHandler([`getAvatar`, 'jdogg'])
           .then((data) => {
             console.log(data);
@@ -67,6 +68,7 @@ function SetInitAvatarLayers(props) {
             options.bottoms(data.bottoms ? data.bottoms : []);
             options.face(data.face ? data.face : []);
           });
+          // eslint-disable-next-line
       }, []);
 
     return avatar;

@@ -17,3 +17,4 @@ export const ADD = "ADD";
 export const SET_EQUIPPED = "SET_EQUIPPED";
 export const SET_DETAILS = "SET_DETAILS";
 export const SET_ALL_LAYERS = "SET_ALL_LAYERS";
+export const SET_INITIAL_LAYER = "SET_INITIAL_LAYER";
