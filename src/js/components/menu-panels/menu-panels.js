@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
     Box,
 } from '@material-ui/core';
@@ -17,6 +17,8 @@ import {
     setBottoms,
     setFeet,
     setDetails,
+    setEquipped,
+    setAccessories,
 } from '../../redux/actions/index';
 
 const mapStateToProps = state => {
@@ -29,6 +31,9 @@ const mapStateToProps = state => {
         bottoms: state.layers.bottoms,
         feet: state.layers.feet,
         details: state.itemDetails,
+        accessories: state.layers.accessories,
+        equipped: state.equipped,
+        layers: state.layers,
     }
 };
 
@@ -41,6 +46,8 @@ const mapDispatchToProps = dispatch => {
         setBottoms: bottoms => dispatch(setBottoms(bottoms)),
         setFeet: feet => dispatch(setFeet(feet)),
         setDetails: details => dispatch(setDetails(details)),
+        setEquipped: equipped => dispatch(setEquipped(equipped)),
+        setAccessories: acc => dispatch(setAccessories(acc)),
     }
 }
 
@@ -71,12 +78,14 @@ TabPanel.propTypes = {
 };
 
 function MenuPanels(props) {
+    const setter = props.setEquipped;
     const equippedFace = SetEquipped(props.face);
     const equippedHair = SetEquipped(props.allHair);
     const equippedTops = SetEquipped(props.tops);
     const equippedHats = SetEquipped(props.hats);
     const equippedBottoms = SetEquipped(props.bottoms);
     const equippedFeet = SetEquipped(props.feet);
+    const equippedAccessories = SetEquipped(props.accessories);
     const SUBCATEGORIES = {  // Subcategories are plural as they were recieved within an array of like objs
         'HATS': props.setHats,
         'HAIR': [
@@ -98,6 +107,11 @@ function MenuPanels(props) {
             props.face,
             equippedFace,
             props.setFace,
+        ],
+        'ACCESSORIES': [
+            props.accessories,
+            equippedAccessories,
+            props.setAccessories,
         ],
     };
     const SINGLE_OBJ_CATS = [
@@ -129,6 +143,26 @@ function MenuPanels(props) {
         props.setDetails(item)
     };
 
+    const itemsToLayers = (itemsArray) => {
+        let list = [];
+        itemsArray.map((i) => {
+            if((typeof(i) === 'object') && (i !== null)){
+                i.equipped && Object.entries(i.equipped).map((item) => {
+                    if(item[1] && item[1].image){
+                        for(let t = 1; t < 6; t++){
+                            if(item[1].image[`layer${t}`]){
+                                list.push(item[1].image[`layer${t}`])
+                            }
+                        }
+                    }
+                    return true
+                })
+            }
+            return true
+        })
+        return list
+    }
+
     const handleClickArray = (obj) => {
         let field = SUBCATEGORIES[obj.category];
         let props = field[0];
@@ -146,6 +180,7 @@ function MenuPanels(props) {
                 setItemDetails(obj)
             }
         }
+        setter(itemsToLayers([{'equipped': data}, ]));
         field[2](data);
     };
 
@@ -159,12 +194,47 @@ function MenuPanels(props) {
             data = [obj, ];
             setItemDetails(obj)
         }
-        SUBCATEGORIES[field](data)
+        SUBCATEGORIES[field](data);
     };
+
+    useEffect(() => {
+        if(
+            equippedAccessories &&
+            equippedBottoms && 
+            equippedFace &&
+            equippedFeet &&
+            equippedHair &&
+            equippedHats &&
+            equippedTops &&
+            !props.equipped.length
+        ){
+            let allEquippedItems = [
+                equippedHats,
+                equippedHair,
+                equippedFace,
+                equippedTops,
+                equippedBottoms,
+                equippedFeet,
+                equippedAccessories,
+            ];
+            let list = itemsToLayers(allEquippedItems);
+            setter(list)
+        }
+    }, [
+        equippedHats,
+        equippedHair,
+        equippedFace,
+        equippedTops,
+        equippedBottoms,
+        equippedFeet,
+        equippedAccessories,
+        setter,
+        props.equipped
+    ])
 
     return (
         <>
-        {/* {console.log(props.details)} */}
+        {/* {console.log(props.equipped)} */}
             <TabPanel value={props.openPanel} index={0}>
                 {/* Overview Panel */}
                 <OverviewTab />

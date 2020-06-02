@@ -39,10 +39,7 @@ const AVATAR = {
     backgroundColor: null,
 };
 
-const EQUIPPED = {
-    idArray: [],
-    equipped: []
-};
+const EQUIPPED = [];
 
 const STATE = {
     loading: true,

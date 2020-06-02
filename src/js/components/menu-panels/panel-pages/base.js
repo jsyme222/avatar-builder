@@ -95,7 +95,6 @@ function BaseTab(props) {
 
     return (
         <Paper>
-            {console.log(props.details)}
             <Typography component={"div"}>Base</Typography>
             <ItemDetails />
             <div className={classes.header}>

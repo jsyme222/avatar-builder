@@ -20,6 +20,7 @@ const PATHS = {
     'hats': '/api/item/view/hat',
     'tops': '/api/item/view/top',
     'feet': '/api/item/view/feet',
+    'initLayer': '/api/item/view/init-layer/',
 };
 
 const DEFAULT_OPTIONS = {

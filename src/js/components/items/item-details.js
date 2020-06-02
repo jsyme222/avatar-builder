@@ -87,7 +87,7 @@ function ItemDetails(props) {
                     <Grid container style={{position: 'relative'}}>
                         <Grid item xs={12} sm={4}>
                             {!details.has_layers ?
-                                <GradientList item={details} equipped={props.equipped}/>
+                                <GradientList item={details}/>
                                 :
                                 <LayerList />
                             }

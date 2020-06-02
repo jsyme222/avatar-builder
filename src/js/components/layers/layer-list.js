@@ -59,7 +59,7 @@ function LayerList(props) {
     const classes = useStyles();
 
     const viewGradientOptions = (layer) => {  // Prepares "gradient-list" for gradient options
-        props.setInitialLayer(layer);
+        // props.setInitialLayer(layer);
         setTheseOptions(layer);
         setShowGradientList(!showGradientList)
     };
@@ -105,7 +105,7 @@ function LayerList(props) {
                     :
                     null
                     :
-                    <GradientList item={theseOptions} />
+                    <GradientList item={theseOptions} equipped={props.equipped}/>
                 }
             </div>
         </Container>

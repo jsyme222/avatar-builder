@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Container, makeStyles } from '@material-ui/core';
 import { APIHandler } from '../../conf';
-import { setAllLayers, setInitialLayer } from '../../redux/actions/index';
+import { setAllLayers, setInitialLayer, setEquipped } from '../../redux/actions/index';
 import { connect } from 'react-redux';
 import { fullURL } from '../../conf';
 
@@ -20,7 +20,8 @@ const mapStateToProps = state => {
     return {
         layers: state.layers,
         initialLayer: state.initialLayer,
-        details: state.itemDetails
+        details: state.itemDetails,
+        equippedState: state.equipped,
     }
 };
 
@@ -28,6 +29,7 @@ const mapDsipatchToProps = dispatch => {
     return {
         setAllLayers: layers => dispatch(setAllLayers(layers)),
         setInitialLayer: layer => dispatch(setInitialLayer(layer)),
+        setEquipped: equipped => dispatch(setEquipped(equipped)),
     }
 }
 
@@ -35,6 +37,7 @@ function GradientList(props) {
     const [gradients, setGradients] = useState(null);  // All possible gradients (color options) 
     const [activeGradient, setActiveGradient] = useState(null);  // The currently selected gradient
     const [item, setItem] = useState(null);  // The selected item to display gradients for
+    const [equipped, setEquipped] = useState(null);
     const useStyles = makeStyles((theme) => ({
         root: {
             minHeight: 50,
@@ -61,9 +64,9 @@ function GradientList(props) {
 
     const setNewLayer = (layer) => {
         let layers = props.layers;  // All layers stored in redux store
-        let variant = layer.variant_of; // Variant layer ID if layer is a variant
-        let cat = props.details.category;  // Category of the currently displayed details item
-        layers[cat.toLowerCase()].map((field) => { // Map the layers matching 'cat'
+        let variant = layer.variant_of || layer.id; // Variant layer ID if layer is a variant
+        let cat = props.details.category.toLowerCase();  // Category of the currently displayed details item
+        layers[cat].map((field) => { // Map the layers matching 'cat'
             for(let i = 1; i <= 5; i++){
                 let layerImage = field.image[`layer${i}`];
                 if(layerImage && ((layerImage.id === variant) || (layerImage.variant_of === variant))){
@@ -77,8 +80,23 @@ function GradientList(props) {
                     }
                     let image = layer.image;
                     layer.image = fullURL(image);  // Image url prepared from the 'layer' parameter
-                    console.log(l[cat.toLowerCase()]);
-                    l[cat.toLowerCase()][0].image[`layer${i}`] = layer;  // Assign new layer to old layer position
+                    if(l[cat].length >= 1){  // Make sure category has items
+                        l[cat].map((l) => {
+                            if(l.id === field.id){  
+                                /*
+                                If the id of the item=>l matches the id of the item=>field then the layer will be swapped correctly.
+                                This ensures that if the item category has multiple items inside the layer will not be swapped
+                                unless it is the crredct item.
+                                */
+                               let initLayer = l.image[`layer${i}`];
+                               let loseInitLayer = equipped.filter((layer) => layer !== initLayer);
+                                l.image[`layer${i}`] = layer  // Assign new layer to old layer position
+                                loseInitLayer.push(layer);
+                                props.setEquipped(loseInitLayer)
+                            }
+                            return true;
+                        })
+                    }
                     props.setAllLayers(l);  // Set all the layers with the new object
                 }
             }
@@ -86,30 +104,45 @@ function GradientList(props) {
         })
     };
 
-    const onClickAction = (layerOption) => {
-
-        function findLayer() {
-            let returnLayer = layerOption;
-            if(props.details.image){
-                for(let x=1; x<=5; x++){
-                    let layer = props.details.image[`layer${x}`]
-                    if(layer && (layer.id === layerOption.variant_of)){ // Find variant layer
-                        returnLayer = layer // return original variant layer
-                    }
+    function findInitLayer(layerOption) {
+        /*
+        Finds the initial layer to store in the 'initalLayer' state.
+        This creates the possibility of swapping any gradient version 
+        of a layer with the original greyscale image.
+        */
+        let initLayer = layerOption;
+        if(props.details.image){
+            for(let x=1; x<=5; x++){
+                let layer = props.details.image[`layer${x}`]
+                if(layer && (layer.id === layerOption.variant_of)){ // Find variant layer
+                    initLayer = layer // return original variant layer
                 }
             }
-            return returnLayer
         }
+        return initLayer
+    }
+
+    const onClickAction = (layerOption) => {
+        /*
+        Sets the initalLayer state if adding a variant layer
+        then swaps layers, if removing a varaint layer it will
+        swap the layer with greyscale initalLayer
+        */
+
         if(activeGradient && (layerOption.id === activeGradient.id)){
             setActiveGradient(null);
-            setNewLayer(props.initialLayer)
+            setNewLayer(props.initialLayer);
         }else{
-            let layer = findLayer()
-            props.setInitialLayer(layer);
+            let layer = findInitLayer(layerOption)  // The initial greyscale of the layer
+            props.setInitialLayer(layer);  // Greyscale now accessible
             setActiveGradient(layerOption);
             setNewLayer(layerOption)
         }
     }
+
+    useEffect(() => {
+        setEquipped(props.equipped ? props.equipped : props.equippedState)
+    }, [props.equipped, props.equippedState]);
 
     useEffect(() => {
         if(props.item) {
@@ -118,6 +151,7 @@ function GradientList(props) {
     }, [props.item, ]);
 
     useEffect(() => {
+        // Grab layer variants/"gradients" for the selected item
         if(item){
             APIHandler(['options', item.id])
             .then(gradients => {
@@ -126,30 +160,31 @@ function GradientList(props) {
         }
     }, [item, ]);
 
-    useEffect(() => {
-        if(!activeGradient){
-            if(item && item.variant_of) {
-                console.log(item)
-                setActiveGradient(item)
-            }
-        }
-    }, [activeGradient, item]);
-
-    return (
-        <Container className={classes.root}>
-                {Array.isArray(gradients) ?
-                    gradients.map((option) => 
-                        <div 
-                            key={option.id}
-                            style={{background: option.color}}
-                            className={`${classes.gradientBox} ${(option === activeGradient) && classes.activeGradient}`}
-                            onClick={(event) => onClickAction(option)}
-                        >
-                        </div>
+    const GradientOptions = () => {
+        let grads = [];
+        Array.isArray(gradients) ?
+                    gradients.map((option) => {
+                        grads.push(
+                            <div 
+                                key={option.id}
+                                style={{background: option.color}}
+                                className={`${classes.gradientBox} ${((equipped.includes(option)) || (option === activeGradient)) && classes.activeGradient}`}
+                                onClick={(event) => onClickAction(option)}
+                            >
+                            </div>
+                        )
+                        return true
+                    }
                     )    
                     :
-                    null
-                }
+                    grads = <p>No options yet</p>
+        return grads
+    };
+    
+    return (
+        <Container className={classes.root}>
+            {console.log(props.item)}
+                <GradientOptions />
         </Container>
     )
 }

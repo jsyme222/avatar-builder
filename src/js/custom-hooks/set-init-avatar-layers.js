@@ -48,7 +48,7 @@ function SetInitAvatarLayers(props) {
       hair: props.setHair,
       tops: props.setTops,
       bottoms: props.setBottoms,
-      acc: props.setAccessories,
+      acc: props.setAcc,
     }
     useEffect(() => {
       // Possibly break this function out into something that will work without needing dependencies
@@ -67,6 +67,7 @@ function SetInitAvatarLayers(props) {
             options.tops(data.tops ? data.tops : []);
             options.bottoms(data.bottoms ? data.bottoms : []);
             options.face(data.face ? data.face : []);
+            options.acc(data.accessories ? data.accessories : []);
           });
           // eslint-disable-next-line
       }, []);
