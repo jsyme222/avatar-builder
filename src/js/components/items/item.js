@@ -71,42 +71,23 @@ function Item(props) {
     const [item, setItem] = useState(null);
     // eslint-disable-next-line
     const [isBeingViewed, setIsBeingViewed] = useState(false);
-    const [isEquippedList, setIsEquippedList] = useState(false);
     const [equipped, setEquipped] = useState(false);
     const [image, setImage] = useState("");
     const classes = useStyles();
 
     const ListItem = () => {
         return (
-            <Paper
-                className={`${classes.optionContainer}  ${equipped && classes.optionContainerEquipped} ${props.isEquippedList && classes.equippedListItem }`} 
-                onClick={(event) => props.onClickAction(props.item)}
-                key={props.item.id}
-            >
-            {(!itemLoading && image) ?
-                <img src={fullURL(image)} alt={props.item.alt} className={classes.optionImage}/>
-                :
-                <Skeleton variant={"circle"} width={30} height={30} style={{ margin: 'auto' }}/>
-            }
-            </Paper>
-        )
-    };
-
-    const EquippedItem = () => {
-        return (
-            <Paper
-                className={classes.optionContainer} 
-                onClick={(event) => props.setDetails(props.item)}
-                key={props.item.id}
-            >
-            {(!itemLoading && image) ?
-                <div>
+                <Paper
+                    className={`${classes.optionContainer}  ${equipped && classes.optionContainerEquipped} ${props.isEquippedList && classes.equippedListItem }`} 
+                    onClick={props.onClickAction && (event => props.onClickAction(props.item))}
+                    key={props.item.id}
+                >
+                {(!itemLoading && image) ?
                     <img src={fullURL(image)} alt={props.item.alt} className={classes.optionImage}/>
-                </div>
-                :
-                <Skeleton variant={"circle"} width={30} height={30} style={{ margin: 'auto' }}/>
-            }
-            </Paper>
+                    :
+                    <Skeleton variant={"circle"} width={30} height={30} style={{ margin: 'auto' }}/>
+                }
+                </Paper>
         )
     };
 
@@ -130,12 +111,6 @@ function Item(props) {
     }, [props.item, ]);
 
     useEffect(() => {
-        if(props.isEquippedList){
-            setIsEquippedList(props.isEquippedList)
-        }
-    }, [props.isEquippedList, ]);
-
-    useEffect(() => {
         if(props.details.id && item) {
             if(item.id === props.details.id){
                 setIsBeingViewed(true);
@@ -146,15 +121,9 @@ function Item(props) {
     }, [props.details, item ])
 
     return (
-        // <div className={isBeingViewed ? classes.beingViewed : null}>
         <div>
             <Grow in={!itemLoading} >
-                {
-                    !isEquippedList ?
-                        <ListItem />
-                        :
-                        <EquippedItem />
-                }
+                <ListItem />
             </Grow>
         </div>
     )

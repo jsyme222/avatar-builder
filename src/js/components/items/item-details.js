@@ -53,12 +53,6 @@ const useStyles = makeStyles((theme) => ({
 function ItemDetails(props) {
     const [details, setDetails] = useState(null);
     const classes = useStyles();
-    let matchedDetailToTitle = props.details.category && (props.details.category.toUpperCase() === props.title.toUpperCase())
-
-    const resetDetails = () => {
-        setDetails(null);
-        // props.setDetails({})
-    };
 
     const StoreLabel = () => {
         return (
@@ -71,18 +65,13 @@ function ItemDetails(props) {
 
     useEffect(() => {
         if(Object.entries(props.details).length >= 1){
-            if(matchedDetailToTitle){
-                setDetails(props.details);
-            }else{
-                resetDetails()
-            }
+            setDetails(props.details);
         }
-    }, [props.details, matchedDetailToTitle])
+    }, [props.details, ])
 
     return (
         details &&
-            <Grow in={matchedDetailToTitle} onClose={(event) => setDetails(null)}>
-                {/* {console.log(details)} */}
+            <Grow in={details} onClose={(event) => setDetails(null)}>
                 <Paper className={classes.root}>
                     <Grid container style={{position: 'relative'}}>
                         <Grid item xs={12} sm={4}>
@@ -105,9 +94,6 @@ function ItemDetails(props) {
                                 <StoreLabel />
                             </div>
                         </Grid>
-                        {/* <IconButton className={classes.closeButton} onClick={(event) => resetDetails()}>
-                            <HighlightOff />
-                        </IconButton> */}
                     </Grid>
                 </Paper>
             </Grow>

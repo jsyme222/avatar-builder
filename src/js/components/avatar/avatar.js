@@ -168,11 +168,11 @@ const Layers = (props) => {
 
     return [
         ...buildBase(),
-        ...buildTops(),
-        ...buildHair(),
-        ...buildFacialHair(),
         ...buildBottoms(),
+        ...buildTops(),
         ...buildFace(),
+        ...buildFacialHair(),
+        ...buildHair(),
         ...buildHats(),
     ]
 };

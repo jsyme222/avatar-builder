@@ -31,7 +31,7 @@ function ItemsList(props) {
             props.items.map((option) => 
                 ((!option.gender || gender === 'All') || ((option.gender.title || option.gender) === gender)) ?
                     <div key={option.id}>
-                        <Item item={option} onClickAction={props.onClickAction} equipped={() => equipped.includes(option.id)} isEquippedList={props.isEquippedList || false}/>
+                        <Item item={option} onClickAction={props.onClickAction} equipped={() => equipped.includes(option.id)} />
                     </div>
                     : null
                 )

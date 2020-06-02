@@ -7,13 +7,15 @@ import {
 import { connect } from 'react-redux';
 import { APIHandler } from '../../conf';
 import ItemsList from '../items/items-list';
-import GenderOptions from '../gender-options/gender-options';
+import ItemListEquipped from '../items/items-list-equipped';
 import ItemDetails from '../items/item-details';
+import GenderOptions from '../gender-options/gender-options';
 
 const mapStateToProps = state => {
     let title = state.openPanel.title;
     return {
         title: title,
+        equippedState: state.equipped,
     }
 };
 
@@ -69,14 +71,9 @@ function SubcategoryPanel(props){
     }, [props.equipped, ]);
 
     return (
-        <div className={classes.root}> 
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-evenly' }}>
-                    <Typography component={"div"}>Equipped</Typography>
-                        <ItemsList 
-                            items={equipped.equipped || []}
-                            equipped={{}}
-                            isEquippedList={true}
-                            />
+        <div className={classes.root}>
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <ItemListEquipped equipped={equipped} />
                 <GenderOptions setGender={setGender} />
             </div>
             <ItemDetails equipped={equipped || {}}/>
@@ -106,6 +103,8 @@ function SubcategoryPanel(props){
                             `No ${props.title.toLowerCase()} right now`
                     }
             </Paper>
+                    {console.log(props.equippedState)}
+            <ItemListEquipped equipped={props.equippedState} allEquipped={true} />
         </div>
         )
 }

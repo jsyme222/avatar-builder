@@ -183,7 +183,7 @@ function GradientList(props) {
     
     return (
         <Container className={classes.root}>
-            {console.log(props.item)}
+            {/* {console.log(props.item)} */}
                 <GradientOptions />
         </Container>
     )
