@@ -22,7 +22,6 @@ const mapDispatchToProps = dispatch => {
 const useStyles = makeStyles((theme) => {
     return {
         equippedItem: {
-
         }
     }
 });
@@ -38,64 +37,21 @@ function ItemsListEquipped(props) {
         return result;
       };
 
-    function onDragEnd(result) {
-        if(props.layers && props.layers[props.title]){
-            let currentLayers = props.layers;
-            currentLayers[props.title].map((layer) => {
-                if(layer.id === result.draggableId){
-                    console.log(layer);
-                    layer['layer'] = result.destination.index
-                    console.log(layer['layer']);
-                }else{
-                    layer['layer'] = layer['layer'] - 1
-                }
-                return true
-            })
-            props.setAllLayers(currentLayers);
-        }
-        if (!result.destination) {
-            return;
-        }
-
-        if (result.destination.index === result.source.index) {
-            return;
-        }
-        
-        const eq = reorder(
-            equipped,
-            result.source.index,
-            result.destination.index
-        );
-
-        setEquipped(eq);
-    }
-
     const EquippedItems = () => {
         let items = [];
         if(equipped && Array.isArray(equipped)){
             equipped.map((item, index) => {
                 items.push(
                         <div className={classes.equippedItem} key={item.id}>
-                            <Draggable draggableId={item.id} index={index}>
-                                {provided => (
-                                    <div
-                                        ref={provided.innerRef}
-                                        {...provided.draggableProps}
-                                        {...provided.dragHandleProps}
-                                    >
                                         <Item 
                                             item={item} 
                                             onClickAction={() => props.setDetails(item)} 
                                         />
-                                  </div>
-                                )}
-                            </Draggable>
-                                                </div>
+                        </div>
                 )
                 return true
             })
         }
-        // console.log(items)
         return items
     }
 
@@ -117,19 +73,13 @@ function ItemsListEquipped(props) {
     }, [props.equipped, ]);
 
        return ( 
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-evenly' }}>
-                <Typography component={"div"}>Equipped {!props.allEquipped ? props.title[0].toUpperCase() + props.title.slice(1) : 'All'}</Typography>
-                <DragDropContext onDragEnd={onDragEnd}> 
-                    <Droppable droppableId="droppable" >
-                        {provided => (
-                            <div style={{'display': 'flex', 'padding': 40 }} ref={provided.innerRef} {...provided.droppableProps}>
-                                <EquippedItems />
-                                {provided.placeholder}
-                            </div>
-                        )}
-
-                    </Droppable>
-                </DragDropContext>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-evenly', maxWidth: '100%'  }}>
+                <Typography component={"div"}>Equipped {!props.allEquipped && props.title[0].toUpperCase() + props.title.slice(1)}</Typography>
+                <div style={{display: 'flex', flexFlow: 'column'}}>
+                                <div style={{'display': 'flex', maxWidth: 450, flexFlow: 'row wrap' }}>
+                                    <EquippedItems />
+                                </div>
+                </div>
         </div>
     )
 }

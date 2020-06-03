@@ -3,6 +3,7 @@ import {
     makeStyles,
     Paper,
     Typography,
+    Divider
 } from '@material-ui/core';
 import { connect } from 'react-redux';
 import { APIHandler } from '../../conf';
@@ -60,11 +61,9 @@ function SubcategoryPanel(props){
     const classes = useStyles();
 
     useEffect(() => {
-        if(!objects){
-            APIHandler(props.title.toLowerCase())
-            .then((data) => setObjects(data))
-        }
-    }, [objects, props.title]);
+        APIHandler(props.title.toLowerCase())
+        .then((data) => setObjects(data))
+    }, [props.title, ]);
 
     useEffect(() => {
         setEquipped(props.equipped)
@@ -72,8 +71,9 @@ function SubcategoryPanel(props){
 
     return (
         <div className={classes.root}>
+            <p style={{ textAlign: 'left', marginBottom: 0 }}>{props.title}</p>
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <ItemListEquipped equipped={equipped} />
+                <ItemListEquipped equipped={props.equippedState} allEquipped={true} />
                 <GenderOptions setGender={setGender} />
             </div>
             <ItemDetails equipped={equipped || {}}/>
@@ -87,14 +87,16 @@ function SubcategoryPanel(props){
                                 Array.isArray(h[1]) && (h[1].length >= 1) ?
                             
                                     <div key={index} className={classes.baseContainer}>
-                                        {h[0] !== 'generic' &&  // Display SubCategory name if supplied
-                                            <Typography component={"div"}>{h[0]}</Typography>}
+                                        {(h[0] !== ('generic' || 'results')) &&  // Display SubCategory name if supplied
+                                            <Typography component={"div"} style={{ textAlign: 'left' }}>{h[0]}</Typography>
+                                            }
                                         <ItemsList 
                                             items={h[1]}
                                             equipped={equipped}
                                             onClickAction={props.onClickAction}
                                             selectedGender={gender}
                                             />
+                                            <Divider />
                                     </div>
                                 :
                                 null
@@ -102,9 +104,8 @@ function SubcategoryPanel(props){
                             :
                             `No ${props.title.toLowerCase()} right now`
                     }
+                    {props.children}
             </Paper>
-                    {console.log(props.equippedState)}
-            <ItemListEquipped equipped={props.equippedState} allEquipped={true} />
         </div>
         )
 }

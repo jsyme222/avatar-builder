@@ -27,8 +27,9 @@ const useStyles = makeStyles((theme) => ({
         transition: 'all 0.25s ease',
         boxShadow: `inset 1px 2px 1px 1px rgba(23, 23, 23, 0.5),0px 1px 1px 0px rgba(23,23,23,0.5)`,
         '&:hover': {
+            transition: 'all 0.25s ease',
             cursor: 'pointer',
-            background: '#f0efed',
+            background: 'rgba(23, 23, 23, 0.25)',
         },
         '&:active': {
             background: 'initial'
@@ -42,21 +43,6 @@ const useStyles = makeStyles((theme) => ({
     optionContainerEquipped: {
         transition: 'all 0.25s ease',
         boxShadow: `2px 2px 10px -5px ${theme.palette.primary.main},0px 1px 1px 0px ${theme.palette.secondary.main},0px 1px 3px 5px ${theme.palette.secondary.main}`,
-    },
-    equippedListItem: {
-        minWidth: 30,
-        minHeight: 30,
-        padding: 1.2,
-        margin: 2,
-        transition: 'all 0.25s ease',
-        '& >img': {
-            marginTop: '20%',
-            padding: 1.2,
-            width: 'auto',
-        },
-        '&:hover': {
-            background: 'rgba(0, 0, 0, 0.15)',
-        }
     },
     beingViewed: {
         '& >div': {
@@ -92,7 +78,9 @@ function Item(props) {
     };
 
     useEffect(() => {
-        setItem(props.item)
+        if(props.item){
+            setItem(props.item)
+        }
     }, [props.item, ]);
 
     useEffect(() => {

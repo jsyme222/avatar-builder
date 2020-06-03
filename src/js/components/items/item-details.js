@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { makeStyles, Paper, Grid, Divider, Grow } from '@material-ui/core';
-// import  HighlightOff from '@material-ui/icons/HighlightOff';
+import { makeStyles, Paper, Grid, Divider, Grow, Button } from '@material-ui/core';
 import { connect } from 'react-redux';
 import GradientList from '../gradients/gradient-list';
 import LayerList from '../layers/layer-list';
 import { fullURL } from '../../conf';
-import { setDetails, setInitialLayer } from '../../redux/actions/index';
-import { LocalOffer } from '@material-ui/icons';
+import { setDetails, setInitialLayer, setPanel } from '../../redux/actions/index';
+import { LocalOffer  } from '@material-ui/icons';
+import LayerSwitchButtons from '../layers/layer-switch-buttons';
 
 const mapStateToProps = state => {
     return {
@@ -19,14 +19,14 @@ const mapDispatchToProps = dispatch => {
     return {
         setDetails: details => dispatch(setDetails(details)),
         setInitialLayer: layer => dispatch(setInitialLayer(layer)),
+        setOpenPanel: panel => dispatch(setPanel(panel)),
     }
-}
+};
 
 const useStyles = makeStyles((theme) => ({
     root: {
         margin: 2.5,
         marginTop: 5,
-        // boxShadow: `1px 1px 0px 0px #232323,0px 1px 1px 0px #232323,-2px 1px 5px 1px ${theme.palette.primary.main}`,
         fontSize: '0.7rem',
     },
     storePreview: {
@@ -47,6 +47,12 @@ const useStyles = makeStyles((theme) => ({
         left: 0,
         top: -25,
         padding: 1,
+    },
+    tabLink: {
+        color: theme.palette.primary.main,
+        '&:hover': {
+            cursor: 'pointer',
+        }
     }
 }));
 
@@ -63,6 +69,21 @@ function ItemDetails(props) {
         )
     };
 
+    const TabLink = (props) => {
+        const tabs = require('../menu/menu-components/menu-drawer/builder-menu-items.json');
+        const handleClick = (tab) => {
+            for(let i = 0; i < tabs.length; i++){
+                if(tabs[i].title.toUpperCase() === tab){
+                    props.setTab(tabs[i])
+                }
+            }
+        };
+
+        return (
+            <p className={classes.tabLink} onClick={() => handleClick(props.children)}>{`${props.children} | `}</p>
+        )
+    };
+
     useEffect(() => {
         if(Object.entries(props.details).length >= 1){
             setDetails(props.details);
@@ -71,7 +92,7 @@ function ItemDetails(props) {
 
     return (
         details &&
-            <Grow in={details} onClose={(event) => setDetails(null)}>
+            <Grow in={typeof(details) === 'object'} onClose={(event) => setDetails(null)}>
                 <Paper className={classes.root}>
                     <Grid container style={{position: 'relative'}}>
                         <Grid item xs={12} sm={4}>
@@ -85,9 +106,13 @@ function ItemDetails(props) {
                             <p><b>{details.title}</b></p>
                             <Divider />
                             <p>{details.description}</p>
+                            <LayerSwitchButtons layer={details}/>
                         </Grid>
                         <Grid item xs={12} sm={4}>
-                            <p>{details.category} | {details.subcategory || ""} | {(details.gender && (details.gender.title || details.gender)) || "Unisex"}</p>
+                            <div style={{ display: 'flex', justifyContent: 'center' }}>
+                                <TabLink setTab={props.setOpenPanel}>{details.category}</TabLink>
+                                <p>&nbsp;{details.subcategory || ""} | {(details.gender && (details.gender.title || details.gender)) || "Unisex"}</p>
+                            </div>
                             <Divider />
                             <div className={classes.storePreview}>
                                 <img src={fullURL(details.image.thumbnail)} alt={details.image.title} className={classes.imagePreview} />

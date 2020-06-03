@@ -2,14 +2,15 @@ import React, { useEffect } from 'react';
 import {
     Box,
 } from '@material-ui/core';
-import OverviewTab from './panel-pages/overview';
-import ClosetTab from './panel-pages/closet';
-import BaseTab from './panel-pages/base';
+import OverviewTab from './panel-components/overview';
+import ClosetTab from './panel-components/closet';
+import { BaseTabButtons } from '../menu-panels/panel-components/button-cards';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import SubcategoryPanel from './subcategory-panel';
 import SetEquipped from '../../custom-hooks/set-equipped';
 import {
+    setBase,
     setFace,
     setHair,
     setTops,
@@ -26,6 +27,7 @@ const mapStateToProps = state => {
         openPanel: state.openPanel.id,
         face: state.layers.face,
         allHair: [...state.layers.hair, ...state.layers.facialHair],
+        base: state.layers.base,
         tops: state.layers.tops,
         hats: state.layers.hats,
         bottoms: state.layers.bottoms,
@@ -39,6 +41,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
+        setBase: base => dispatch(setBase(base)),
         setFace: face => dispatch(setFace(face)),
         setHair: hair => dispatch(setHair(hair)),
         setTops: tops => dispatch(setTops(tops)),
@@ -86,8 +89,14 @@ function MenuPanels(props) {
     const equippedBottoms = SetEquipped(props.bottoms);
     const equippedFeet = SetEquipped(props.feet);
     const equippedAccessories = SetEquipped(props.accessories);
+    const equippedBase = SetEquipped(props.base);
     const SUBCATEGORIES = {  // Subcategories are plural as they were recieved within an array of like objs
         'HATS': props.setHats,
+        'BASE': [
+            props.base,
+            equippedBase,
+            props.setBase
+        ],
         'HAIR': [
             props.allHair,
             equippedHair,
@@ -114,14 +123,6 @@ function MenuPanels(props) {
             props.setAccessories,
         ],
     };
-    const SINGLE_OBJ_CATS = [
-        'FACIAL-HAIR',
-        'HEAD-HAIR',
-        'EYES',
-        'NOSES',
-        'MOUTHS',
-        'EYEBROWS'
-    ];
 
     const ALL_CATS = () => {
         let data = {
@@ -164,14 +165,15 @@ function MenuPanels(props) {
     }
 
     const handleClickArray = (obj) => {
-        let field = SUBCATEGORIES[obj.category];
+        console.log(obj)
+        let field = SUBCATEGORIES[obj.category.toUpperCase()];
         let props = field[0];
         let equipped = field[1];
         let data;
         if(equipped.idArray.includes(obj.id)){
             data = props.filter((item) => item.id !== obj.id)
         }else{
-            if(!SINGLE_OBJ_CATS.includes(obj.subcategory || obj.category)){
+            if(obj.can_layer){
                 data = [...props, obj];
                 setItemDetails(obj)
             }else{
@@ -245,7 +247,12 @@ function MenuPanels(props) {
             </TabPanel>
             <TabPanel value={props.openPanel} index={2}>
                 {/* Base Panel */}
-                <BaseTab />
+                <SubcategoryPanel
+                    equipped={equippedBase}
+                    onClickAction={handleClickArray}
+                >
+                    <BaseTabButtons />
+                </SubcategoryPanel>
             </TabPanel>
             <TabPanel value={props.openPanel} index={3}>
                 {/* Face Panel */}
@@ -265,7 +272,7 @@ function MenuPanels(props) {
                 {/* Hats Panel */}
                 <SubcategoryPanel
                     equipped={equippedHats}
-                    onClickAction={handleClickSingleItem}
+                    onClickAction={handleClickArray}
                 />
             </TabPanel>
             <TabPanel value={props.openPanel} index={6}>
@@ -286,14 +293,21 @@ function MenuPanels(props) {
                 {/* Feet Panel  */}
                 <SubcategoryPanel
                     equipped={equippedFeet}
-                    onClickAction={handleClickSingleItem}
+                    onClickAction={handleClickArray}
                 />
             </TabPanel>
             <TabPanel value={props.openPanel} index={9}>
                 {/* Accessories Panel  */}
                 <SubcategoryPanel
                     equipped={equippedFeet}
-                    onClickAction={handleClickSingleItem}
+                    onClickAction={handleClickArray}
+                />
+            </TabPanel>
+            <TabPanel value={props.openPanel} index={10}>
+                {/* Premium Panel  */}
+                <SubcategoryPanel
+                    equipped={equippedFeet}
+                    onClickAction={handleClickArray}
                 />
             </TabPanel>
         </>

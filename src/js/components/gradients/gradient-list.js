@@ -177,13 +177,13 @@ function GradientList(props) {
                     }
                     )    
                     :
-                    grads = <p>No options yet</p>
+                    grads = <p>No options</p>
         return grads
     };
     
     return (
         <Container className={classes.root}>
-            {/* {console.log(props.item)} */}
+            {console.log(props.item)}
                 <GradientOptions />
         </Container>
     )

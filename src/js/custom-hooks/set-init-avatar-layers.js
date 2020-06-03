@@ -57,9 +57,9 @@ function SetInitAvatarLayers(props) {
             console.log(data);
             options.avatar(
               {
-                username: data.title ? data.title : "",
+                username: data.author ? data.author : "",
                 gender: data.gender && data.gender.title ? data.gender.title : "",
-                outfitName: data.outfit_name ? data.outfit_name : "",
+                outfitName: data.title ? data.title : "",
               }
             );
             options.base(data.base ? data.base : []);

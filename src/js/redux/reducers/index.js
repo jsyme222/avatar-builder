@@ -45,8 +45,8 @@ const STATE = {
     loading: true,
     sidebarOpen: false,
     openPanel: {
-        id: 6,
-        title: 'Tops'
+        id: 0,
+        title: 'Overview'
     },
     avatar: AVATAR,
     layers: LAYERS,

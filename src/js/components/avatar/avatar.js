@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     makeStyles,
 } from '@material-ui/core';
@@ -138,32 +138,10 @@ const Layers = (props) => {
         let hatsLayers = createLayers(hats)
         return hatsLayers; 
     }
-    function buildFacialHair(){
-        let hair = layers.hair;
-        let payload = [];
-        if(Array.isArray(hair)){
-            hair.map((h) => {
-                h.subcategory === 'FACIAL-HAIR' &&
-                    payload.push(h)
-                return true;
-            })
-        }
-        let combinedLayers = combineLayers(payload)
-        return combinedLayers
-    }   
-
     function buildHair(){
         let hair = layers.hair;
-        let payload = [];
-        if(Array.isArray(hair)){
-            hair.map((h) => {
-                h.subcategory === 'HEAD-HAIR' &&
-                    payload.push(h)
-                return true;
-            })
-        }
-        let combinedLayers = combineLayers(payload)
-        return combinedLayers
+        let hairLayers = createLayers(hair)
+        return hairLayers
     }   
 
     return [
@@ -171,14 +149,21 @@ const Layers = (props) => {
         ...buildBottoms(),
         ...buildTops(),
         ...buildFace(),
-        ...buildFacialHair(),
         ...buildHair(),
         ...buildHats(),
     ]
 };
 
 function BuilderAvatar(props) {
+    const [loaded, setLoaded] = useState(false);
     const classes = useStyles();
+
+    useEffect(() => {
+        setTimeout(() => {
+            setLoaded(true)
+        }, 500)
+    }, [props.layers, ]);
+
     return (
         <div className={classes.avatarContainer}>
             <Layers layers={props.layers}/>

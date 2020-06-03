@@ -6,7 +6,7 @@ import {
     Typography
 } from '@material-ui/core';
 import { connect } from 'react-redux';
-import ItemsList from '../../items/items-list';
+import ItemsEquippedList from '../../items/items-list-equipped';
 
 const mapStateToProps = state => {
     return {
@@ -59,13 +59,10 @@ function OverviewTab(props) {
                     </Paper>
                 </Grid>
                 <Grid item xs={12}>
-                    <Typography component={"div"}>Equipped</Typography>
-                    <Paper className={classes.equipmentBox}>
-                        <ItemsList
-                            items={equipped || []}
+                        <ItemsEquippedList
+                            allEquipped={true}
                             equipped={equipped || []}
                         />
-                    </Paper>
                 </Grid>
             </Grid>
         </Paper>
